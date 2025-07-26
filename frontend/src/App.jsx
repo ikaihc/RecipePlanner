@@ -1,12 +1,12 @@
 import './App.css'
-import NavBar from './components/common/NavBar.jsx'
+import AllRecipes from './pages/AllRecipes.jsx'
 
 function App() {
 
 
   return (
     <>
-      <NavBar/>
+        <AllRecipes/>
 
     </>
   )
