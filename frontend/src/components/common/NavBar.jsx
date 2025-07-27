@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { IoIosMenu, IoIosClose } from 'react-icons/io'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const navItems = [
     { label: 'All Recipes', path: '/all-recipes' },
@@ -30,10 +30,10 @@ const Navbar = () => {
                         { navItems.map((item, index) => (
                             <NavLink
                                 key={ index } to={ item.path } className={ ({ isActive }) =>
-                                    isActive
-                                        ? 'text-indigo-600 font-bold'
-                                        : 'text-gray-700 hover:text-indigo-600 font-medium'
-                                }
+                                isActive
+                                    ? 'text-indigo-600 font-bold'
+                                    : 'text-gray-700 hover:text-indigo-600 font-medium'
+                            }
                             >
                                 { item.label }
                             </NavLink>
@@ -59,8 +59,8 @@ const Navbar = () => {
                             to={item.path}
                             className={({ isActive }) =>
                                 isActive
-                                    ? 'text-indigo-600 font-bold'
-                                    : 'text-gray-700 hover:text-indigo-600 font-medium'
+                                    ? 'block px-4 py-2 text-indigo-600 bg-indigo-50 font-bold'
+                                    : 'block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium'
                             }
                         >
                             {item.label}
