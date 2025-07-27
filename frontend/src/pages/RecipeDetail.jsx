@@ -145,15 +145,15 @@ function RecipeDetail () {
     const [favourites, setFavourites] = useState([])
 
     useEffect(() => {
-        console.log(mealPlanSelections)
+        console.log("mealSelections",mealPlanSelections)
     }, [mealPlanSelections])
 
     useEffect(() => {
-        console.log(mealPlans)
+        console.log("mealPlans",mealPlans)
     }, [mealPlans])
 
     useEffect(() => {
-        console.log(favourites)
+        console.log("favourites",favourites)
     }, [favourites])
 
     const handleToggleFavourites = () => {
@@ -189,7 +189,6 @@ function RecipeDetail () {
 
     const handleAddToMealPlan = () => {
         if (Object.keys(mealPlanSelections).length===0) alert("Please select at least one meal to add to your meal plan!")
-        console.log('lll')
 
         setMealPlans(prev => {
             const newItems = []
@@ -211,7 +210,6 @@ function RecipeDetail () {
                     }
                 })
             }
-
             return [...prev, ...newItems]
         })
 
@@ -230,9 +228,9 @@ function RecipeDetail () {
     return (
         <Layout>
             <h1 className="text-4xl font-semibold text-gray-800 my-5 text-center">Recipe Detail { recipeId }</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-6 sm:p-16 justify-items-center">
+            <div className="grid grid-cols-1 md:grid-cols-8 gap-10 p-6 sm:p-16 justify-items-center">
                 {/* Image */ }
-                <div>
+                <div className='col-span-3'>
                     <div>
                         <img
                             src={ curRecipe.image_url }
@@ -283,7 +281,7 @@ function RecipeDetail () {
                 </div>
 
                 {/* Details */ }
-                <div className="flex flex-col justify-start gap-6">
+                <div className="col-span-5 flex flex-col justify-start gap-6">
                     {/* Title */ }
                     <h2 className="text-3xl font-bold text-indigo-700">{ curRecipe.title }</h2>
 
