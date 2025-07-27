@@ -1,10 +1,10 @@
 import React from 'react'
 
-function Button ({children,onClick}) {
+function Button ({children,...props}) {
     return (
         <button
             className="w-full p-2 bg-indigo-500 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-colors"
-            onClick={onClick}
+            { ...props }
         >
             {children}
         </button>
