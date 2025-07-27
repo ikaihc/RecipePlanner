@@ -73,10 +73,8 @@ const recipeReducer = (state, action) => {
             return {
                 ...state,
                 recipes: [
-                    ...state.recipes, {
-                        id: 12344,
-                        ...action.payload,
-                    },
+                    ...state.recipes,
+                    action.payload
                 ],
             }
 
