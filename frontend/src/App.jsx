@@ -1,18 +1,22 @@
 import './App.css'
 import AllRecipes from './pages/AllRecipes.jsx'
-import { createBrowserRouter, RouterProvider } from 'react-router'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RecipeDetail from './pages/RecipeDetail.jsx'
 import Home from './pages/Home.jsx'
+import RecipesProvider from './contexts/RecipeContext.jsx'
 
 function App () {
     const router = createBrowserRouter([
         { path: '/', element: <Home/> },
-        { path: '/all-recipes', element: <AllRecipes/> },
+        { path: '/all-recipes', element: <AllRecipes/>, },
         { path: '/:recipeId/detail', element: <RecipeDetail/> },
     ])
 
     return (
-        <RouterProvider router={ router }/>
+        <RecipesProvider>
+            <RouterProvider router={ router }/>
+        </RecipesProvider>
+
     )
 }
 
