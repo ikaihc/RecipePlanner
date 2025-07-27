@@ -142,6 +142,7 @@ function RecipeDetail () {
     const [isFavourite, setIsFavourite] = useState(false)
     const [mealPlanSelections, setMealPlanSelections] = useState({})
     const [mealPlans, setMealPlans] = useState([])
+    const [favourites, setFavourites] = useState([])
 
     useEffect(() => {
         console.log(mealPlanSelections)
@@ -150,6 +151,28 @@ function RecipeDetail () {
     useEffect(() => {
         console.log(mealPlans)
     }, [mealPlans])
+
+    useEffect(() => {
+        console.log(favourites)
+    }, [favourites])
+
+    const handleToggleFavourites = () => {
+        setIsFavourite(prev => {
+            const newIsFav = !prev
+
+            setFavourites(prev => {
+                if (newIsFav) {
+                    const exists = prev.some(f => f.id === curRecipe.id)
+                    if (exists) return prev
+                    return [...prev, curRecipe]
+                } else {
+                    return prev.filter(f => f.id !== curRecipe.id)
+                }
+            })
+
+            return newIsFav
+        })
+    }
 
     const handleCheckboxChange = (day, meal) => {
         setMealPlanSelections(prev => {
@@ -165,6 +188,9 @@ function RecipeDetail () {
     }
 
     const handleAddToMealPlan = () => {
+        if (Object.keys(mealPlanSelections).length===0) alert("Please select at least one meal to add to your meal plan!")
+        console.log('lll')
+
         setMealPlans(prev => {
             const newItems = []
 
@@ -194,7 +220,7 @@ function RecipeDetail () {
     if (!curRecipe) {
         return (
             <Layout>
-                <div className="p-16 text-center text-red-500 text-xl font-semibold">
+                <div className="p-16 text-center text-indigo-500 text-3xl font-semibold">
                     Recipe not found.
                 </div>
             </Layout>
@@ -203,6 +229,7 @@ function RecipeDetail () {
 
     return (
         <Layout>
+            <h1 className="text-4xl font-semibold text-gray-800 my-5 text-center">Recipe Detail { recipeId }</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-6 sm:p-16 justify-items-center">
                 {/* Image */ }
                 <div>
@@ -210,11 +237,11 @@ function RecipeDetail () {
                         <img
                             src={ curRecipe.image_url }
                             alt={ curRecipe.title }
-                            className="w-100 mb-2 h-auto rounded-md shadow-md object-cover"
+                            className="h-80 mb-2 w-auto rounded-md shadow-md object-cover"
                         />
                     </div>
 
-                    <div className="flex my-4 cursor-pointer" onClick={ () => setIsFavourite(prev => !prev) }>
+                    <div className="flex my-4 cursor-pointer" onClick={handleToggleFavourites}>
                         { isFavourite ? <IoIosHeart size={ 24 } color="red"/> : <IoIosHeartEmpty size={ 24 }/> }
                         <span>Add to Favourites</span>
                     </div>
@@ -232,7 +259,7 @@ function RecipeDetail () {
                                                    className="flex items-center gap-1 text-gray-800 text-sm">
                                                 <input
                                                     type="checkbox"
-                                                    // checked={ isSelected(day, meal) }
+                                                    checked={mealPlanSelections[day]?.includes(meal) || false}
                                                     onChange={ () => handleCheckboxChange(day, meal) }
                                                     className="accent-indigo-500"
                                                 />
@@ -245,12 +272,13 @@ function RecipeDetail () {
                         </div>
 
 
-                        <Button
+                        <button
+                            className="w-full p-2 mt-3 bg-indigo-500 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-colors"
                             onClick={ handleAddToMealPlan }
-                            // disabled={ selectedDays.length === 0 }
+                            // disabled={Object.keys(mealPlanSelections).length===0}
                         >
                             Add to Meal Plan
-                        </Button>
+                        </button>
                     </div>
                 </div>
 
