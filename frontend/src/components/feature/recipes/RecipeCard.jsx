@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 function RecipeCard ({ id,title, description, image_url }) {
     return (
         <div
-            className="w-full max-w-xs bg-white border border-gray-200 rounded-sm shadow hover:shadow-xl transition-shadow duration-200">
+            className="flex flex-col justify-between w-full max-w-xs bg-white border border-gray-200 rounded-sm shadow hover:shadow-xl transition-shadow duration-200">
             <img
                 src={ image_url }
                 alt={ title || 'Recipe image' }

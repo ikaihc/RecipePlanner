@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Layout from '../components/common/Layout.jsx'
 import { useRecipesDispatch } from '../contexts/RecipeContext.jsx'
 import { useNavigate } from 'react-router-dom'
+import Button from '../components/common/Button.jsx'
 
 const UploadRecipe = () => {
     const dispatch = useRecipesDispatch()
@@ -138,12 +139,11 @@ const UploadRecipe = () => {
                         />
                     </div>
 
-                    <button
+                    <Button
                         type="submit"
-                        className="w-full bg-indigo-600 text-white py-2 rounded-md font-semibold hover:bg-indigo-700 transition"
                     >
                         Submit Recipe
-                    </button>
+                    </Button>
                 </form>
             </div>
         </Layout>

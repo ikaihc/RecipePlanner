@@ -99,11 +99,11 @@ function RecipeDetail () {
             <div className="grid grid-cols-1 md:grid-cols-8 gap-10 p-6 sm:p-16 justify-items-center">
                 {/* Image */ }
                 <div className="col-span-3">
-                    <div>
+                    <div className='h-80 w-80'>
                         <img
                             src={ curRecipe.image_url }
                             alt={ curRecipe.title }
-                            className="h-80 mb-2 w-auto rounded-md shadow-md object-cover"
+                            className="w-full h-full rounded-md shadow-md object-cover"
                         />
                     </div>
 
@@ -141,7 +141,6 @@ function RecipeDetail () {
                         <button
                             className="w-full p-2 mt-3 bg-indigo-500 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-colors"
                             onClick={ handleAddToMealPlan }
-                            // disabled={Object.keys(mealPlanSelections).length===0}
                         >
                             Add to Meal Plan
                         </button>
@@ -149,7 +148,7 @@ function RecipeDetail () {
                 </div>
 
                 {/* Details */ }
-                <div className="col-span-5 flex flex-col justify-start gap-6">
+                <div className="col-span-5 flex flex-col justify-start gap-6 w-full">
                     {/* Title */ }
                     <h2 className="text-3xl font-bold text-indigo-700">{ curRecipe.title }</h2>
 
