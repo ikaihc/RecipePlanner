@@ -1,7 +1,8 @@
 import React from 'react'
 import Button from '../../common/Button.jsx'
+import { Link } from 'react-router'
 
-function RecipeCard ({ title, description, image_url }) {
+function RecipeCard ({ id,title, description, image_url }) {
     return (
         <div
             className="w-full max-w-xs bg-white border border-gray-200 rounded-sm shadow hover:shadow-xl transition-shadow duration-200">
@@ -19,7 +20,10 @@ function RecipeCard ({ title, description, image_url }) {
                 </p>
             </div>
             <div className="p-4">
-                <Button>View Detail</Button>
+                <Link to={ `/${ id }/detail` }>
+                    <Button>View Detail</Button>
+                </Link>
+
             </div>
         </div>
     )

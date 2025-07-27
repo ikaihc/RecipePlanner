@@ -1,15 +1,17 @@
 import './App.css'
 import AllRecipes from './pages/AllRecipes.jsx'
+import { createBrowserRouter, RouterProvider } from 'react-router'
+import RecipeDetail from './pages/RecipeDetail.jsx'
 
-function App() {
+function App () {
+    const router = createBrowserRouter([
+        { path: '/all-recipes', element: <AllRecipes/> },
+        { path: '/:recipeId/detail', element: <RecipeDetail/> },
+    ])
 
-
-  return (
-    <>
-        <AllRecipes/>
-
-    </>
-  )
+    return (
+        <RouterProvider router={ router }/>
+    )
 }
 
 export default App
