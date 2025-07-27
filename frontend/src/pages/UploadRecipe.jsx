@@ -81,27 +81,28 @@ const UploadRecipe = () => {
                     </div>
 
                     <div>
+                        <label className="block text-gray-700 font-medium">Upload Picture</label>
                         <input
                             type="file"
                             accept="image/*"
-                            onChange={(e) => {
-                                const file = e.target.files[0];
+                            onChange={ (e) => {
+                                const file = e.target.files[ 0 ]
                                 if (file) {
-                                    const imageUrl = URL.createObjectURL(file);
-                                    setFormData(prev => ({ ...prev, image_url: imageUrl }));
+                                    const imageUrl = URL.createObjectURL(file)
+                                    setFormData(prev => ( { ...prev, image_url: imageUrl } ))
                                 }
-                            }}
+                            } }
                             className="w-full mt-1 p-2 border border-gray-300 rounded-md"
                             required
                         />
 
-                        {formData.image_url && (
+                        { formData.image_url && (
                             <img
-                                src={formData.image_url}
+                                src={ formData.image_url }
                                 alt="Preview"
                                 className="mt-2 max-h-48 rounded-md object-cover"
                             />
-                        )}
+                        ) }
                     </div>
 
                     <div>
