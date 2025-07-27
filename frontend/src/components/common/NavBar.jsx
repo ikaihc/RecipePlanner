@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { IoIosMenu, IoIosClose } from 'react-icons/io'
+import { Link, NavLink } from 'react-router-dom'
 
 const navItems = [
-    {label:'All Recipes',path:'/all-recipes'},
-    {label:'Favourites',path:'/favorites'},
-    {label:'Upload',path:'/upload'},
-    {label:'My Shopping List',path:'my-shopping-list'},
-    {label:'Meals of the Week',path:'/meals-of-the-week'},
-    {label:'Login',path:'/login'},
-    {label:'Register',path:'/register'},]
+    { label: 'All Recipes', path: '/all-recipes' },
+    { label: 'Favourites', path: '/favorites' },
+    { label: 'Upload', path: '/upload' },
+    { label: 'My Shopping List', path: 'my-shopping-list' },
+    { label: 'Meals of the Week', path: '/meals-of-the-week' },
+    { label: 'Login', path: '/login' },
+    { label: 'Register', path: '/register' },
+]
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -26,9 +28,15 @@ const Navbar = () => {
                     {/* Desktop Menu */ }
                     <div className="hidden md:flex space-x-8 items-center">
                         { navItems.map((item, index) => (
-                            <a key={ index } href={item.path} className="text-gray-700 hover:text-indigo-600 font-medium">
+                            <NavLink
+                                key={ index } to={ item.path } className={ ({ isActive }) =>
+                                    isActive
+                                        ? 'text-indigo-600 font-bold'
+                                        : 'text-gray-700 hover:text-indigo-600 font-medium'
+                                }
+                            >
                                 { item.label }
-                            </a>
+                            </NavLink>
                         )) }
                     </div>
 
@@ -46,10 +54,17 @@ const Navbar = () => {
             { isOpen && (
                 <div className="md:hidden bg-white shadow-lg">
                     { navItems.map((item, index) => (
-                        <a key={ index } href={item.path}
-                           className="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
-                            { item.label }
-                        </a>
+                        <NavLink
+                            key={index}
+                            to={item.path}
+                            className={({ isActive }) =>
+                                isActive
+                                    ? 'text-indigo-600 font-bold'
+                                    : 'text-gray-700 hover:text-indigo-600 font-medium'
+                            }
+                        >
+                            {item.label}
+                        </NavLink>
                     )) }
                 </div>
             ) }
