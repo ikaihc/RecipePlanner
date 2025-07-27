@@ -247,7 +247,7 @@ function RecipeDetail () {
                     </div>
 
 
-                    <div className="bg-gray-100 p-4 rounded-md mt-2">
+                    <div className="bg-indigo-50 p-4 rounded-md mt-2">
                         <h4 className="text-xl font-semibold mb-2 text-gray-700">Add to Meal of the Week:</h4>
                         <div className="space-y-4 max-h-56 overflow-y-auto">
                             { daysOfWeek.map(day => (
@@ -293,7 +293,7 @@ function RecipeDetail () {
                     ) }
 
                     {/* Ingredients */ }
-                    <div className="bg-indigo-50 p-4 rounded-xl shadow-inner">
+                    <div className="bg-indigo-50 p-4 rounded-md">
                         <h3 className="text-2xl font-semibold text-indigo-600 mb-2">Ingredients</h3>
                         <ul className="list-disc list-inside text-gray-800 space-y-1">
                             { curRecipe.ingredients.map((ingredient, idx) => (
