@@ -109,7 +109,7 @@ function RecipeDetail () {
 
                     <div className="flex my-4 cursor-pointer" onClick={ handleToggleFavourites }>
                         { isFavourite ? <IoIosHeart size={ 24 } color="red"/> : <IoIosHeartEmpty size={ 24 }/> }
-                        <span>Add to Favourites</span>
+                        <span>{isFavourite ? "Remove from Favourites" : "Add to Favourites" }</span>
                     </div>
 
 
@@ -162,7 +162,7 @@ function RecipeDetail () {
                         <h3 className="text-2xl font-semibold text-indigo-600 mb-2">Ingredients</h3>
                         <ul className="list-disc list-inside text-gray-800 space-y-1">
                             { Array.isArray(curRecipe.ingredients) ? (curRecipe.ingredients.map((ingredient, idx) => (
-                                <li key={ idx }>{ ingredient }</li>
+                                <li key={ idx }>{ ingredient.name}  {ingredient.quantity}</li>
                             ))) : ( <li>No ingredients available.</li> ) }
                         </ul>
                     </div>
