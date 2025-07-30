@@ -4,6 +4,7 @@ import Layout from '../components/common/Layout.jsx'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import Button from '../components/common/Button.jsx'
 import { useRecipes, useRecipesDispatch } from '../contexts/RecipeContext.jsx'
+import { Link } from 'react-router'
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner']
@@ -29,6 +30,8 @@ function RecipeDetail () {
     useEffect(() => {
         console.log('favourites', favourites)
     }, [favourites])
+
+
 
     const handleToggleFavourites = () => {
         if (!curRecipe) return
@@ -185,7 +188,6 @@ function RecipeDetail () {
                             { curRecipe.instructions }
                         </p>
                     </div>
-
                 </div>
             </div>
         </Layout>

@@ -1,8 +1,14 @@
 import React from 'react'
 import Button from '../../common/Button.jsx'
 import { Link } from 'react-router'
+import { useRecipesDispatch } from '../../../contexts/RecipeContext.jsx'
 
 function RecipeCard ({ id,title, description, image_url ,edit}) {
+    const dispatch = useRecipesDispatch()
+    const handleDeleteRecipe = ()=> {
+        alert('Please confirm to delete the recipe')
+        dispatch({type:'delete_recipe',payload:{id}})
+    }
     return (
         <div
             className="flex flex-col justify-between w-full max-w-xs bg-white border border-gray-200 rounded-sm shadow hover:shadow-xl transition-shadow duration-200">
@@ -24,8 +30,11 @@ function RecipeCard ({ id,title, description, image_url ,edit}) {
                     <Button>View Detail</Button>
                 </Link>
                 {edit &&  <Link to={ `/${ id }/update-recipe` } className='flex-1'>
-                    <Button>Update Recipe</Button>
+                    <Button>Update</Button>
                 </Link>}
+                <div className='flex-1'>
+                    { edit && <Button onClick={handleDeleteRecipe}>Delete</Button> }
+                </div>
 
             </div>
         </div>

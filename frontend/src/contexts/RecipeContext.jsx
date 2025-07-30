@@ -4,16 +4,15 @@ import react_img from '../assets/react.svg'
 const RecipesContext = createContext()
 const RecipesDispatchContext = createContext()
 
-
 const initialState = {
     allRecipes: [
         {
             id: 123456,
             user_id: 123,
             title: 'Mapo Toufu',
-            prep_time_minutes:20,
-            cook_time_minutes:15,
-            servings:2,
+            prep_time_minutes: 20,
+            cook_time_minutes: 15,
+            servings: 2,
             ingredients: [
                 { name: 'Silken tofu', quantity: '500g' },
                 { name: 'Ground beef (or pork)', quantity: '150g' },
@@ -39,9 +38,9 @@ const initialState = {
             id: 654321,
             user_id: 123,
             title: 'Mapo Toufu',
-            prep_time_minutes:20,
-            cook_time_minutes:15,
-            servings:2,
+            prep_time_minutes: 20,
+            cook_time_minutes: 15,
+            servings: 2,
             ingredients: [
                 { name: 'Silken tofu', quantity: '500g' },
                 { name: 'Ground beef (or pork)', quantity: '150g' },
@@ -67,9 +66,9 @@ const initialState = {
             id: 111222,
             user_id: 456,
             title: 'Mapo Toufu',
-            prep_time_minutes:20,
-            cook_time_minutes:15,
-            servings:2,
+            prep_time_minutes: 20,
+            cook_time_minutes: 15,
+            servings: 2,
             ingredients: [
                 { name: 'Silken tofu', quantity: '500g' },
                 { name: 'Ground beef (or pork)', quantity: '150g' },
@@ -123,8 +122,14 @@ const recipeReducer = (state, action) => {
         case 'update_recipe':
             return {
                 ...state,
-                allRecipes: state.allRecipes.map(recipe=>recipe.id === action.payload.id ? action.payload : recipe)
+                allRecipes: state.allRecipes.map(recipe => recipe.id === action.payload.id ? action.payload : recipe),
 
+            }
+
+        case 'delete_recipe':
+            return {
+                ...state,
+                allRecipes: [...state.allRecipes.filter(recipe => recipe.id !== action.payload.id)],
             }
 
         case'add_to_favourites':
@@ -143,7 +148,7 @@ const recipeReducer = (state, action) => {
         case'remove_from_favourites':
             return {
                 allRecipes: state.allRecipes,
-                favourites: state.favourites.filter(recipe => recipe.recipe_id !== action.payload.recipe_id),
+                favourites: state.favourites.filter(recipe => recipe.id !== action.payload.id),
             }
         default:
             return state
