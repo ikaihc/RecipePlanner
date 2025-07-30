@@ -25,7 +25,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Favorite::class);
     }
-
+    // with shopping list
+    public function shoppingList()
+    {
+        return $this->hasMany(ShoppingList::class);
+    }
 
     /**
      * The attributes that are mass assignable.

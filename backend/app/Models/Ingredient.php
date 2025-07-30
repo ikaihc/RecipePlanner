@@ -19,4 +19,9 @@ class Ingredient extends Model
                     ->withPivot('amount')
                     ->withTimestamps();
     }
+        public function shoppingListItems()
+    {
+        return $this->hasMany(ShoppingList::class);
+    }
+
 }
