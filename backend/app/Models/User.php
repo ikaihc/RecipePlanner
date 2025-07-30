@@ -14,11 +14,18 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
-    // One to many relationship
+    // One to many relationships
+    // with recipe
     public function recipes()
     {
         return $this->hasMany(Recipe::class);
     }
+    // with favorite
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
 
     /**
      * The attributes that are mass assignable.
