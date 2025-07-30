@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\IngredientController;
 use Illuminate\Support\Facades\Auth;
@@ -22,18 +23,25 @@ Route::get('/ingredients/{id}', [IngredientController::class, 'show']);
 
 // Protected routes (need token)
 Route::middleware('auth:sanctum')->group(function () {
+    // Get all User
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
 
+    // User Logout
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    // Recipes created by a specific user
     Route::get('/users/{user}/recipes', [RecipeController::class, 'userRecipes']);
 
-
     // Recipe with index and show excluded
-    Route::apiResource('recipes', RecipeController::class)->except(['index', 'show']);
+    Route::apiResource('/recipes', RecipeController::class)->except(['index', 'show']);
     
     // Ingredients with index and show excluded
-    Route::apiResource('ingredients', IngredientController::class)->except(['index', 'show']);
+    Route::apiResource('/ingredients', IngredientController::class)->except(['index', 'show']);
+
+    // Favorites
+    Route::apiResource('/favorites', FavoriteController::class);
+    Route::post('/favorites/toggle', [FavoriteController::class, 'toggle']);
+
 });
