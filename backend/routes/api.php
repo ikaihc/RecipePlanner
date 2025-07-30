@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/ingredients', IngredientController::class)->except(['index', 'show']);
 
     // Favorites
-    Route::apiResource('/favorites', [FavoriteController::class, 'index']);
+    Route::get('/favorites', [FavoriteController::class, 'index']);
     Route::post('/favorites/toggle', [FavoriteController::class, 'toggle']);
 
     // Shopping List
