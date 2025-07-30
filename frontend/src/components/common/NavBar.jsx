@@ -3,8 +3,10 @@ import { IoIosMenu, IoIosClose } from 'react-icons/io'
 import { NavLink } from 'react-router-dom'
 
 const navItems = [
+    { label: 'Home', path: '/' },
     { label: 'All Recipes', path: '/all-recipes' },
     { label: 'Favourites', path: '/favorites' },
+    { label: 'My Recipes', path: '/my-recipes' },
     { label: 'Upload', path: '/upload' },
     { label: 'My Shopping List', path: 'my-shopping-list' },
     { label: 'Meals of the Week', path: '/meals-of-the-week' },

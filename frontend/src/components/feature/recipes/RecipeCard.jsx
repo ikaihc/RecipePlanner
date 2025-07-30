@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '../../common/Button.jsx'
 import { Link } from 'react-router'
 
-function RecipeCard ({ id,title, description, image_url }) {
+function RecipeCard ({ id,title, description, image_url ,edit}) {
     return (
         <div
             className="flex flex-col justify-between w-full max-w-xs bg-white border border-gray-200 rounded-sm shadow hover:shadow-xl transition-shadow duration-200">
@@ -19,10 +19,13 @@ function RecipeCard ({ id,title, description, image_url }) {
                     { description }
                 </p>
             </div>
-            <div className="p-4">
-                <Link to={ `/${ id }/detail` }>
+            <div className={ `p-4 ${edit ? 'flex gap-2' : ''}` }>
+                <Link to={ `/${ id }/detail` } className='flex-1'>
                     <Button>View Detail</Button>
                 </Link>
+                {edit &&  <Link to={ `/${ id }/update-recipe` } className='flex-1'>
+                    <Button>Update Recipe</Button>
+                </Link>}
 
             </div>
         </div>

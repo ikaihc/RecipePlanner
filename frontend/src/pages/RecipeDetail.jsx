@@ -9,11 +9,11 @@ const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sat
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner']
 
 function RecipeDetail () {
-    const { recipes, favourites } = useRecipes()
+    const { allRecipes, favourites } = useRecipes()
     const dispatch = useRecipesDispatch()
     const { recipeId } = useParams()
 
-    const curRecipe = recipes.find(recipe => recipe.id === Number(recipeId))
+    const curRecipe = allRecipes.find(recipe => recipe.id === Number(recipeId))
     const isFavourite = favourites.some(fav => fav.id === curRecipe?.id)
     const [mealPlanSelections, setMealPlanSelections] = useState({})
     const [mealPlans, setMealPlans] = useState([])
@@ -97,7 +97,7 @@ function RecipeDetail () {
         <Layout>
             <h1 className="text-4xl font-semibold text-gray-800 my-5 text-center">Recipe Detail { recipeId }</h1>
             <div className="grid grid-cols-1 md:grid-cols-8 gap-10 p-6 sm:p-16 justify-items-center">
-                {/* Image */ }
+                {/* Left */ }
                 <div className="col-span-3">
                     <div className='h-80 w-80'>
                         <img
@@ -111,7 +111,6 @@ function RecipeDetail () {
                         { isFavourite ? <IoIosHeart size={ 24 } color="red"/> : <IoIosHeartEmpty size={ 24 }/> }
                         <span>{isFavourite ? "Remove from Favourites" : "Add to Favourites" }</span>
                     </div>
-
 
                     <div className="bg-indigo-50 p-4 rounded-md mt-2">
                         <h4 className="text-xl font-semibold mb-2 text-gray-700">Add to Meal of the Week:</h4>
@@ -147,7 +146,7 @@ function RecipeDetail () {
                     </div>
                 </div>
 
-                {/* Details */ }
+                {/* Right */ }
                 <div className="col-span-5 flex flex-col justify-start gap-6 w-full">
                     {/* Title */ }
                     <h2 className="text-3xl font-bold text-indigo-700">{ curRecipe.title }</h2>
@@ -157,19 +156,31 @@ function RecipeDetail () {
                         <p className="text-gray-600 leading-relaxed">{ curRecipe.description }</p>
                     ) }
 
+                    <div className='flex gap-2'>
+                        <div className='bg-indigo-500 p-1 rounded-lg text-white text-sm'>Prepare
+                            Time: { curRecipe.prep_time_minutes } mins
+                        </div>
+                        <div className='bg-indigo-500 p-1 rounded-lg text-white text-sm'>Cook
+                            Time: { curRecipe.prep_time_minutes } mins
+                        </div>
+                        <div
+                            className='bg-indigo-500 p-1 rounded-lg text-white text-sm'>Servings: { curRecipe.servings }</div>
+                    </div>
+
                     {/* Ingredients */ }
                     <div className="bg-indigo-50 p-4 rounded-md">
                         <h3 className="text-2xl font-semibold text-indigo-600 mb-2">Ingredients</h3>
                         <ul className="list-disc list-inside text-gray-800 space-y-1">
-                            { Array.isArray(curRecipe.ingredients) ? (curRecipe.ingredients.map((ingredient, idx) => (
-                                <li key={ idx }>{ ingredient.name}  {ingredient.quantity}</li>
-                            ))) : ( <li>No ingredients available.</li> ) }
+                            { Array.isArray(curRecipe.ingredients) ? ( curRecipe.ingredients.map((ingredient, idx) => (
+                                <li key={ idx }>{ ingredient.name } { ingredient.quantity }</li>
+                            )) ) : ( <li>No ingredients available.</li> ) }
                         </ul>
                     </div>
 
                     {/* Instructions */ }
                     <div>
                         <h3 className="text-2xl font-semibold text-indigo-600 mb-2">Instructions</h3>
+
                         <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                             { curRecipe.instructions }
                         </p>
