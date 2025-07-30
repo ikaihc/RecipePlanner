@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import Layout from '../components/common/Layout.jsx'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
-import Button from '../components/common/Button.jsx'
 import { useRecipes, useRecipesDispatch } from '../contexts/RecipeContext.jsx'
-import { Link } from 'react-router'
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner']
@@ -88,16 +85,16 @@ function RecipeDetail () {
     }
     if (!curRecipe) {
         return (
-            <Layout>
+            <>
                 <div className="p-16 text-center text-indigo-500 text-3xl font-semibold">
                     Recipe not found.
                 </div>
-            </Layout>
+            </>
         )
     }
 
     return (
-        <Layout>
+        <>
             <h1 className="text-4xl font-semibold text-gray-800 my-5 text-center">Recipe Detail { recipeId }</h1>
             <div className="grid grid-cols-1 md:grid-cols-8 gap-10 p-6 sm:p-16 justify-items-center">
                 {/* Left */ }
@@ -190,7 +187,7 @@ function RecipeDetail () {
                     </div>
                 </div>
             </div>
-        </Layout>
+        </>
     )
 }
 
