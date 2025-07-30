@@ -7,7 +7,9 @@ import { useAuth } from '../auth/AuthContext'
 
 
 const navItems = [
+    { label: 'Home', path: '/' },
     { label: 'All Recipes', path: '/all-recipes' },
+    { label: 'My Recipes', path: '/my-recipes' },
     { label: 'Favorites', path: '/favorites' },
     { label: 'Upload', path: '/upload' },
     { label: 'My Shopping List', path: '/my-shopping-list' },

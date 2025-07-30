@@ -1,0 +1,178 @@
+import { createContext, useContext, useReducer } from 'react'
+import react_img from '../assets/react.svg'
+
+const RecipesContext = createContext()
+const RecipesDispatchContext = createContext()
+
+const initialState = {
+    allRecipes: [
+        {
+            id: 123456,
+            user_id: 123,
+            title: 'Mapo Toufu',
+            prep_time_minutes: 20,
+            cook_time_minutes: 15,
+            servings: 2,
+            ingredients: [
+                { name: 'Silken tofu', quantity: '500g' },
+                { name: 'Ground beef (or pork)', quantity: '150g' },
+                { name: 'Doubanjiang (fermented chili bean paste)', quantity: '1.5 tbsp' },
+                { name: 'Douchi (fermented black beans)', quantity: '1 tsp (optional)' },
+                { name: 'Garlic', quantity: '2 cloves, minced' },
+                { name: 'Ginger', quantity: '1 tsp, minced' },
+                { name: 'Green onions', quantity: '2 stalks, chopped' },
+                { name: 'Sichuan peppercorns', quantity: '1 tsp, toasted and ground' },
+                { name: 'Soy sauce', quantity: '1 tbsp' },
+                { name: 'Shaoxing wine (or dry sherry)', quantity: '1 tbsp' },
+                { name: 'Chicken stock or water', quantity: '150ml' },
+                { name: 'Cornstarch', quantity: '1 tbsp (mixed with water as a slurry)' },
+                { name: 'Sesame oil', quantity: '½ tsp (optional)' },
+                { name: 'Vegetable oil', quantity: '2 tbsp' },
+            ],
+            description: 'The traditional Sichuan dish of silken tofu and ground beef, packed with málà flavor from fermented chili bean paste and Sichuan peppercorns.',
+            instructions: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi cumque eveniet id, magnam magni quidem quo quos recusandae sed sint soluta veritatis? Dicta exercitationem illo, iure minima molestiae mollitia tenetur.',
+            isPublic: true,
+            image_url: react_img,
+        },
+        {
+            id: 654321,
+            user_id: 123,
+            title: 'Mapo Toufu',
+            prep_time_minutes: 20,
+            cook_time_minutes: 15,
+            servings: 2,
+            ingredients: [
+                { name: 'Silken tofu', quantity: '500g' },
+                { name: 'Ground beef (or pork)', quantity: '150g' },
+                { name: 'Doubanjiang (fermented chili bean paste)', quantity: '1.5 tbsp' },
+                { name: 'Douchi (fermented black beans)', quantity: '1 tsp (optional)' },
+                { name: 'Garlic', quantity: '2 cloves, minced' },
+                { name: 'Ginger', quantity: '1 tsp, minced' },
+                { name: 'Green onions', quantity: '2 stalks, chopped' },
+                { name: 'Sichuan peppercorns', quantity: '1 tsp, toasted and ground' },
+                { name: 'Soy sauce', quantity: '1 tbsp' },
+                { name: 'Shaoxing wine (or dry sherry)', quantity: '1 tbsp' },
+                { name: 'Chicken stock or water', quantity: '150ml' },
+                { name: 'Cornstarch', quantity: '1 tbsp (mixed with water as a slurry)' },
+                { name: 'Sesame oil', quantity: '½ tsp (optional)' },
+                { name: 'Vegetable oil', quantity: '2 tbsp' },
+            ],
+            description: 'The traditional Sichuan dish of silken tofu and ground beef, packed with málà flavor from fermented chili bean paste and Sichuan peppercorns.',
+            instructions: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi cumque eveniet id, magnam magni quidem quo quos recusandae sed sint soluta veritatis? Dicta exercitationem illo, iure minima molestiae mollitia tenetur.',
+            isPublic: true,
+            image_url: react_img,
+        },
+        {
+            id: 111222,
+            user_id: 456,
+            title: 'Mapo Toufu',
+            prep_time_minutes: 20,
+            cook_time_minutes: 15,
+            servings: 2,
+            ingredients: [
+                { name: 'Silken tofu', quantity: '500g' },
+                { name: 'Ground beef (or pork)', quantity: '150g' },
+                { name: 'Doubanjiang (fermented chili bean paste)', quantity: '1.5 tbsp' },
+                { name: 'Douchi (fermented black beans)', quantity: '1 tsp (optional)' },
+                { name: 'Garlic', quantity: '2 cloves, minced' },
+                { name: 'Ginger', quantity: '1 tsp, minced' },
+                { name: 'Green onions', quantity: '2 stalks, chopped' },
+                { name: 'Sichuan peppercorns', quantity: '1 tsp, toasted and ground' },
+                { name: 'Soy sauce', quantity: '1 tbsp' },
+                { name: 'Shaoxing wine (or dry sherry)', quantity: '1 tbsp' },
+                { name: 'Chicken stock or water', quantity: '150ml' },
+                { name: 'Cornstarch', quantity: '1 tbsp (mixed with water as a slurry)' },
+                { name: 'Sesame oil', quantity: '½ tsp (optional)' },
+                { name: 'Vegetable oil', quantity: '2 tbsp' },
+            ],
+            description: 'The traditional Sichuan dish of silken tofu and ground beef, packed with málà flavor from fermented chili bean paste and Sichuan peppercorns.',
+            instructions: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi cumque eveniet id, magnam magni quidem quo quos recusandae sed sint soluta veritatis? Dicta exercitationem illo, iure minima molestiae mollitia tenetur.',
+            isPublic: true,
+            image_url: react_img,
+        },
+    ],
+    favourites: [
+        // {
+        //     user_id: 123,
+        //     recipe_id: 123456,
+        // },
+        {
+            id: 123456,
+            user_id: 123,
+            title: 'Mapo Toufu',
+            description: 'The traditional Sichuan dish of silken tofu and ground beef, packed with málà flavor from fermented chili bean paste and Sichuan peppercorns.',
+            instructions: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi cumque eveniet id, magnam magni quidem quo quos recusandae sed sint soluta veritatis? Dicta exercitationem illo, iure minima molestiae mollitia tenetur.',
+            isPublic: true,
+            image_url: 'data:image/jpeg;base64,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',
+        },
+    ],
+}
+
+const recipeReducer = (state, action) => {
+    switch (action.type) {
+        case 'create_recipe':
+            return {
+                ...state,
+                allRecipes: [
+                    ...state.allRecipes,
+                    action.payload,
+                ],
+            }
+
+        case 'update_recipe':
+            return {
+                ...state,
+                allRecipes: state.allRecipes.map(recipe => recipe.id === action.payload.id ? action.payload : recipe),
+
+            }
+
+        case 'delete_recipe':
+            return {
+                ...state,
+                allRecipes: [...state.allRecipes.filter(recipe => recipe.id !== action.payload.id)],
+            }
+
+        case'add_to_favourites':
+            if (state.favourites.some(recipe => recipe.id === action.payload.id)) {
+                return state
+            }
+
+            return {
+                ...state,
+                favourites:
+                    [
+                        ...state.favourites,
+                        action.payload,
+                    ],
+            }
+        case'remove_from_favourites':
+            return {
+                allRecipes: state.allRecipes,
+                favourites: state.favourites.filter(recipe => recipe.id !== action.payload.id),
+            }
+        default:
+            return state
+    }
+
+}
+
+export default function RecipesProvider ({ children }) {
+    const [state, dispatch] = useReducer(recipeReducer, initialState)
+    console.log('state', state)
+
+    return (
+        <RecipesContext.Provider value={ state }>
+            <RecipesDispatchContext.Provider value={ dispatch }>
+                { children }
+            </RecipesDispatchContext.Provider>
+        </RecipesContext.Provider>
+    )
+}
+
+export const useRecipes = () => {
+    return useContext(RecipesContext)
+}
+
+export const useRecipesDispatch = () => {
+    return useContext(RecipesDispatchContext)
+}

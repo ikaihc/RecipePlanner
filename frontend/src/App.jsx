@@ -1,40 +1,42 @@
 import './App.css'
-import NavBar from './components/common/NavBar.jsx'
+import AllRecipes from './pages/AllRecipes.jsx'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import RecipeDetail from './pages/RecipeDetail.jsx'
+//import Home from './pages/Home.jsx'
+import RecipesProvider from './contexts/RecipeContext.jsx'
+import Favourites from './pages/Favourites.jsx'
+import UploadRecipe from './pages/UploadRecipe.jsx'
+import MyRecipes from './pages/MyRecipes.jsx'
+import UpdateRecipe from './pages/UpdateRecipe.jsx'
+import Layout from './components/common/Layout.jsx'
 import Home from './components/Home.jsx'
 import Login from './components/auth/Login.jsx'
 import Register from './components/auth/Register.jsx'
-import { createBrowserRouter, RouterProvider } from 'react-router'
 
-import { Outlet } from 'react-router-dom'
+function App () {
+    const router = createBrowserRouter([
+        {
+            path: '/',
+            element: <Layout/>,
+            children: [
+                { index: true, element: <Home /> },
+                { path: 'login', element: <Login /> },
+                { path: 'register', element: <Register /> },
+                { path: '/all-recipes', element: <AllRecipes/> },
+                { path: '/favorites', element: <Favourites/> },
+                { path: '/upload', element: <UploadRecipe/> },
+                { path: '/:recipeId/detail', element: <RecipeDetail/> },
+                { path: '/my-recipes', element: <MyRecipes/> },
+                { path: '/:recipeId/update-recipe', element: <UpdateRecipe/> },
+            ],
+        }])  
 
+    return (
+        <RecipesProvider>
+            <RouterProvider router={ router }/>
+        </RecipesProvider>
 
-// 创建一个 Layout 页面，内含 NavBar
-const Layout = () => (
-  <>
-    <NavBar />
-     <div className="pt-16"> {/* 👈 给出 padding-top 64px，对应 h-16 的导航条高度 */}
-      <Outlet />
-    </div>
-   
-  </>
-)
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Layout />,
-    children: [
-      { index: true, element: <Home /> }, // index 表示默认页面
-      { path: 'login', element: <Login /> },
-      { path: 'register', element: <Register /> },
-    ],
-  },
-])
-
-function App() {
-  return (
-    <RouterProvider router={router} />
-  )
+    )
 }
 
 export default App
