@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\ShoppingListController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -41,7 +42,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/ingredients', IngredientController::class)->except(['index', 'show']);
 
     // Favorites
-    Route::apiResource('/favorites', FavoriteController::class);
+    Route::apiResource('/favorites', [FavoriteController::class, 'index']);
     Route::post('/favorites/toggle', [FavoriteController::class, 'toggle']);
+
+    // Shopping List
+    Route::get('/shopping-list', [ShoppingListController::class, 'index']);
+    Route::post('/shopping-list/toggle', [ShoppingListController::class, 'toggle']);
+    Route::post('/shopping-list/from-recipe/{recipeId}', [ShoppingListController::class, 'bulkAddFromRecipe']);
+    Route::delete('/shopping-list/clear', [ShoppingListController::class, 'clearAll']);
+
 
 });
