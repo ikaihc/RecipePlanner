@@ -8,6 +8,7 @@ const initialState = {
     favorites: [],
     ingredients: [],
     userRecipes: [],
+
 }
 
 // update react  state based on actions
