@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
-import { useRecipes, useRecipesDispatch } from '../contexts/RecipeContext.jsx'
+import { useRecipes } from '../contexts/RecipeContext.jsx'
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner']
 
 function RecipeDetail () {
-    const { allRecipes, favourites } = useRecipes()
-    const dispatch = useRecipesDispatch()
+    const { getRecipeById, favorites,toggleFavorite,loadFavorites} = useRecipes()
     const { recipeId } = useParams()
+    const curRecipe = getRecipeById(recipeId)
 
-    const curRecipe = allRecipes.find(recipe => recipe.id === Number(recipeId))
-    const isFavourite = favourites.some(fav => fav.id === curRecipe?.id)
+    console.log(curRecipe)
+    const [isFavorite, setIsFavorite] = useState(favorites.some(fav => fav.id === curRecipe?.id))
     const [mealPlanSelections, setMealPlanSelections] = useState({})
     const [mealPlans, setMealPlans] = useState([])
 
@@ -25,19 +25,15 @@ function RecipeDetail () {
     }, [mealPlans])
 
     useEffect(() => {
-        console.log('favourites', favourites)
-    }, [favourites])
+        console.log('favorites', favorites)
+    }, [favorites])
 
 
-
-    const handleToggleFavourites = () => {
+    const handleToggleFavorites =  async() => {
         if (!curRecipe) return
-
-        if (isFavourite) {
-            dispatch({ type: 'remove_from_favourites', payload: curRecipe })
-        } else {
-            dispatch({ type: 'add_to_favourites', payload: curRecipe })
-        }
+        setIsFavorite(prev=>!prev)
+        await toggleFavorite(recipeId)
+        await loadFavorites()
 
     }
 
@@ -107,9 +103,9 @@ function RecipeDetail () {
                         />
                     </div>
 
-                    <div className="flex my-4 cursor-pointer" onClick={ handleToggleFavourites }>
-                        { isFavourite ? <IoIosHeart size={ 24 } color="red"/> : <IoIosHeartEmpty size={ 24 }/> }
-                        <span>{isFavourite ? "Remove from Favourites" : "Add to Favourites" }</span>
+                    <div className="flex my-4 cursor-pointer" onClick={ handleToggleFavorites }>
+                        { isFavorite ? <IoIosHeart size={ 24 } color="red"/> : <IoIosHeartEmpty size={ 24 }/> }
+                        <span>{isFavorite ? "Remove from Favorites" : "Add to Favorites" }</span>
                     </div>
 
                     <div className="bg-indigo-50 p-4 rounded-md mt-2">
@@ -172,7 +168,7 @@ function RecipeDetail () {
                         <h3 className="text-2xl font-semibold text-indigo-600 mb-2">Ingredients</h3>
                         <ul className="list-disc list-inside text-gray-800 space-y-1">
                             { Array.isArray(curRecipe.ingredients) ? ( curRecipe.ingredients.map((ingredient, idx) => (
-                                <li key={ idx }>{ ingredient.name } { ingredient.quantity }</li>
+                                <li key={ idx }>{ ingredient.name } { ingredient.pivot.amount }</li>
                             )) ) : ( <li>No ingredients available.</li> ) }
                         </ul>
                     </div>

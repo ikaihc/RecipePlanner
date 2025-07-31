@@ -5,13 +5,13 @@ import RecipeDetail from './pages/RecipeDetail.jsx'
 //import Home from './pages/Home.jsx'
 import RecipesProvider from './contexts/RecipeContext.jsx'
 import Favourites from './pages/Favourites.jsx'
-import UploadRecipe from './pages/UploadRecipe.jsx'
+import CreateRecipe from './pages/CreateRecipe.jsx'
 import MyRecipes from './pages/MyRecipes.jsx'
-import UpdateRecipe from './pages/UpdateRecipe.jsx'
 import Layout from './components/common/Layout.jsx'
 import Home from './components/Home.jsx'
 import Login from './components/auth/Login.jsx'
 import Register from './components/auth/Register.jsx'
+import UpdateRecipe from './pages/UpdateRecipe.jsx'
 
 function App () {
     const router = createBrowserRouter([
@@ -24,7 +24,7 @@ function App () {
                 { path: 'register', element: <Register /> },
                 { path: '/all-recipes', element: <AllRecipes/> },
                 { path: '/favorites', element: <Favourites/> },
-                { path: '/upload', element: <UploadRecipe/> },
+                { path: '/upload', element: <CreateRecipe/> },
                 { path: '/:recipeId/detail', element: <RecipeDetail/> },
                 { path: '/my-recipes', element: <MyRecipes/> },
                 { path: '/:recipeId/update-recipe', element: <UpdateRecipe/> },

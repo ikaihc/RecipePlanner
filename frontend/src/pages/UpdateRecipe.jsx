@@ -1,25 +1,39 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import { useRecipes, useRecipesDispatch } from '../contexts/RecipeContext.jsx'
+import { useRecipes } from '../contexts/RecipeContext.jsx'
 import RecipeForm from '../components/feature/recipes/RecipeForm.jsx'
 
 const UpdateRecipe = () => {
     const { recipeId } = useParams()
-    const { allRecipes } = useRecipes()
-    const dispatch = useRecipesDispatch()
+    const { updateRecipe, getRecipeById, loadIngredients, ingredients, createIngredient } = useRecipes()
     const navigate = useNavigate()
+    const existingRecipe = getRecipeById(recipeId)
 
-    const existingRecipe = allRecipes.find(r => r.id === Number(recipeId))
+    const handleSubmit = async(formData) => {
+        const updatedIngredients = []
 
-    const handleSubmit = (formData) => {
-        const updatedRecipe = {
-            ...formData,
-            id: existingRecipe.id, // Important to retain the original ID
-            user_id: existingRecipe.user_id,
+        for (let item of formData.ingredients) {
+            const existing = ingredients.find(i => i.name.toLowerCase() === item.name.toLowerCase())
+            let ingredientId
+
+            if (existing) {
+                ingredientId = existing.id
+            } else {
+                // Create the new ingredient
+                const newIngredient = await createIngredient( { name: item.name })
+                ingredientId = newIngredient.id
+
+                // Update context list
+                loadIngredients() // refresh
+            }
+            updatedIngredients.push({
+                id: ingredientId,
+                amount: item.pivot.amount,
+            })
         }
 
-        dispatch({ type: 'update_recipe', payload: updatedRecipe })
+        await updateRecipe(recipeId,{ ...formData, ingredients: updatedIngredients })
         alert('Recipe updated successfully!')
-        navigate( `/${ existingRecipe.id }/detail` )
+        navigate(`/${ existingRecipe.id }/detail`)
     }
 
     if (!existingRecipe) {
@@ -34,7 +48,8 @@ const UpdateRecipe = () => {
         <>
             <div className="max-w-3xl mx-auto p-8 mt-12 bg-white border border-gray-100 shadow-md rounded-md">
                 <h2 className="text-3xl font-bold mb-6 text-center text-indigo-600">Update Recipe</h2>
-               <RecipeForm onSubmit={handleSubmit} initialValues={existingRecipe} submitButtonLabel='Update' isEdit={true}/>
+                <RecipeForm onSubmit={ handleSubmit } initialValues={ existingRecipe } submitButtonLabel="Update"
+                            isEdit={ true }/>
             </div>
         </>
     )

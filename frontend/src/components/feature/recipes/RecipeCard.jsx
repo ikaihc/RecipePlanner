@@ -1,13 +1,15 @@
 import React from 'react'
 import Button from '../../common/Button.jsx'
 import { Link } from 'react-router'
-import { useRecipesDispatch } from '../../../contexts/RecipeContext.jsx'
+import { useRecipes } from '../../../contexts/RecipeContext.jsx'
 
 function RecipeCard ({ id,title, description, image_url ,edit}) {
-    const dispatch = useRecipesDispatch()
-    const handleDeleteRecipe = ()=> {
+
+    const {deleteRecipe} = useRecipes()
+
+    const handleDeleteRecipe = async()=> {
+        await deleteRecipe(id)
         alert('Please confirm to delete the recipe')
-        dispatch({type:'delete_recipe',payload:{id}})
     }
     return (
         <div
