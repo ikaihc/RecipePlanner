@@ -181,8 +181,8 @@ export default function RecipesProvider ({ children }) {
         },
 
         //load all recipes created by auth user
-        loadUserRecipes: async(user_id) => {
-            const result = await api.get(`/users/${ user_id }/recipes`)
+        loadUserRecipes: async() => {
+            const result = await api.get('my-recipes')
             dispatch({ type: 'load_user_recipes', payload: result.data })
 
         },
