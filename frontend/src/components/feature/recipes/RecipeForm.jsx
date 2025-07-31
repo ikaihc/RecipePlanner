@@ -11,7 +11,7 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
         prep_time_minutes: '',
         cook_time_minutes: '',
         servings: '',
-        is_public: false,
+        is_public: true,
         ingredients: [{}],
         instructions: '',
         ...initialValues,
@@ -66,8 +66,16 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
                       onChange={ handleChange } rows="3"/>
 
             <div>
-                <Input label="Upload Picture" name="image_url" id="image_url" type="file" required={ !isEdit }
-                       accept="image/*" onChange={ handleFileChange }/>
+                <label
+                    className="w-30 border border-gray-300 rounded-md p-2 cursor-pointer flex items-center gap-2">
+                    Upload image
+                    <input
+                        name="image_url" id="image_url" type="file" required={ !isEdit }
+                        onChange={ handleFileChange }
+                        className="hidden"
+                    />
+                </label>
+
                 { formData.image_url && (
                     <img src={ formData.image_url } alt="Preview" className="mt-2 max-h-48 rounded-md object-cover"/>
                 ) }
@@ -102,9 +110,9 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
                 </button>
             </div>
             <div>
-                <label htmlFor="is_public" className='text-gray-700 font-medium'>Set to public</label>
-                <input type="checkbox" name="is_public" id="is_public" className='mx-2'
-                       checked={ formData.is_public } onChange={handleChange}/>
+                <label htmlFor="is_public" className="text-gray-700 font-medium">Set to public</label>
+                <input type="checkbox" name="is_public" id="is_public" className="mx-2"
+                       checked={ formData.is_public } onChange={ handleChange }/>
             </div>
 
             <TextArea label="Instructions" name="instructions" id="instructions" required
