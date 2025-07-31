@@ -17,31 +17,26 @@ export default function Login () {
     const handleSubmit = async(e) => {
         e.preventDefault()
 
-        const matchedUser = testUsers.find(
-            (user) => user.email === email && user.password === password,
-        )
+        try {
+            const res = await fetch('http://127.0.0.1:8000/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            })
 
-        if (matchedUser) {
-            // alert('✅ [TestUser] Login successful!');
-            try {
-                const res = await fetch('http://127.0.0.1:8000/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password }),
-                })
+            const data = await res.json()
 
-                const data = await res.json()
-                console.log(data)
+            if (res.ok) {
                 localStorage.setItem('token', data.token)
                 alert('Login success')
+                login()
+                navigate('/')
+            } else {
+                alert(data.message || 'Login failed')
             }
-            catch (err) {
-                console.error(err)
-                alert('Login failed')
-            }
-            login() // ✅ 更新登录状态
-            navigate('/') // ✅ 跳转到主页
-
+        } catch (err) {
+            console.error(err)
+            alert('Something went wrong')
         }
 
     }
