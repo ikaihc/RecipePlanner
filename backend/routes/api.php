@@ -7,6 +7,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\ShoppingListController;
+use App\Http\Controllers\MealPlanController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -50,6 +51,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/shopping-list/toggle', [ShoppingListController::class, 'toggle']);
     Route::post('/shopping-list/from-recipe/{recipeId}', [ShoppingListController::class, 'bulkAddFromRecipe']);
     Route::delete('/shopping-list/clear', [ShoppingListController::class, 'clearAll']);
+
+    // Meal Plans
+    Route::delete('/meal-plans/clear', [MealPlanController::class, 'clearAll']);
+    Route::get('/meal-plans/day/{day}', [MealPlanController::class, 'byDay']);
+    Route::apiResource('meal-plans', MealPlanController::class);
 
 
 });
