@@ -80,16 +80,16 @@ export default function Register() {
     if (!validateForm()) return;
     setErrors({});
  
-      if (email === 'test@example.com') {
-        setErrors({
-        email: '✖ The email has already been taken.',
-      });
-    } else {
-      setSuccess('✅ [DEV] Registered successfully!');
-      }
+    //   if (email === 'test@example.com') {
+    //     setErrors({
+    //     email: '✖ The email has already been taken.',
+    //   });
+    // } else {
+    //   setSuccess('✅ [DEV] Registered successfully!');
+    //   }
 
 
-  /*
+  
   try {
     const res = await fetch('http://127.0.0.1:8000/api/register', {
       method: 'POST',
@@ -127,7 +127,7 @@ export default function Register() {
     console.error(err);
     setErrors({ general: '❌ An error occurred. Please try again.' });
   }
-    */
+    
 };
 
 
