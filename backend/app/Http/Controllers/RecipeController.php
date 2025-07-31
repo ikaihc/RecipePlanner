@@ -27,7 +27,7 @@ class RecipeController extends Controller
     // Get a single recipe
     public function show($id)
     {
-        $recipe = Recipe::find($id);
+        $recipe = Recipe::with('ingredients')->find($id);
 
         // Optionally restrict access if recipe is not public and not owned by user
         // if (!$recipe->is_public && $recipe->user_id !== Auth::id()) {
@@ -41,7 +41,19 @@ class RecipeController extends Controller
             ], 404);
         }
 
-        return response()->json($recipe);
+        // Only keep ingredient id and name
+        $ingredients = $recipe->ingredients->map(function ($ingredient) {
+            return [
+                'id' => $ingredient->id,
+                'name' => $ingredient->name
+            ];
+        });
+
+        // Add filtered ingredients to recipe data
+        $data = $recipe->toArray();
+        $data['ingredients'] = $ingredients;
+
+        return response()->json($data);
     }
 
     // Create a new recipe
