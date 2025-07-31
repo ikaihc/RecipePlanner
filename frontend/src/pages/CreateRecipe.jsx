@@ -4,7 +4,7 @@ import RecipeForm from '../components/feature/recipes/RecipeForm.jsx'
 import { useEffect } from 'react'
 
 const CreateRecipe = () => {
-    const { createRecipe, ingredients,loadUserRecipes, loadIngredients, createIngredient } = useRecipes()
+    const { createRecipe, ingredients,loadUserRecipes, loadIngredients, createIngredient,uploadImage } = useRecipes()
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
 
@@ -40,21 +40,27 @@ const CreateRecipe = () => {
             })
         }
 
-        // call createRecipe function to send request to backend
-        const result = await createRecipe({
-          ...formData,
-            ingredients: updatedIngredients,
-        });
-
-        console.log(result)
-
-        await loadUserRecipes()
-
-        if (result.status === 201) {
-            alert('Recipe uploaded successfully!')
+        let image_url = ''
+        const result = await uploadImage({image: formData.image_url })
+        if (result.statusText === 'OK') {
+            image_url = result.data.url
         }
 
 
+        // call createRecipe function to send request to backend
+        const recipe_result = await createRecipe({
+          ...formData,
+            ingredients: updatedIngredients,
+            image_url:image_url
+        });
+
+        console.log(recipe_result)
+
+        await loadUserRecipes()
+
+        if (result.statusText === 'Created') {
+            alert('Recipe uploaded successfully!')
+        }
 
         // refetch all public recipes after creating new recipe
 

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 const UpdateRecipe = () => {
     const { recipeId } = useParams()
-    const { updateRecipe, getRecipeById, loadRecipes, ingredients, createIngredient } = useRecipes()
+    const { updateRecipe, getRecipeById, loadRecipes, ingredients, createIngredient,uploadImage } = useRecipes()
     const navigate = useNavigate()
     const [existingRecipe, setExistingRecipe] = useState(null)
     const token = localStorage.getItem('token')
@@ -15,6 +15,7 @@ const UpdateRecipe = () => {
         (async function(){
             const recipe = await getRecipeById(recipeId)
             setExistingRecipe(recipe)
+            console.log('recipe',recipe,recipeId)
         })()
 
         if (!token) {
@@ -46,7 +47,13 @@ const UpdateRecipe = () => {
             })
         }
 
-        await updateRecipe(recipeId,{ ...formData, ingredients: updatedIngredients })
+        let image_url = ''
+        const result = await uploadImage({image: formData.image_url })
+        if (result.statusText === 'OK') {
+            image_url = result.data.url
+        }
+
+        await updateRecipe(recipeId,{ ...formData, ingredients: updatedIngredients ,image_url:image_url})
         await loadRecipes()
         alert('Recipe updated successfully!')
         navigate(`/${ existingRecipe.id }/detail`)

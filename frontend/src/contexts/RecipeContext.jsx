@@ -186,6 +186,14 @@ export default function RecipesProvider ({ children }) {
             dispatch({ type: 'load_user_recipes', payload: result.data })
 
         },
+        uploadImage:async(image)=>{
+            const result = await api.post('/upload-image',image,{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }})
+            return result
+
+        }
     }
 
     useEffect(() => {
