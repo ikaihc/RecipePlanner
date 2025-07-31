@@ -3,19 +3,20 @@ import Input from './Input'
 import TextArea from './TextArea'
 import Button from '../../common/Button'
 
-const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit', isEdit }) => {
+const RecipeForm = ({ onSubmit, submitButtonLabel = 'Submit', isEdit }) => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        image_url: '',
+        // image_url: '',
         prep_time_minutes: '',
         cook_time_minutes: '',
         servings: '',
         is_public: true,
         ingredients: [{}],
         instructions: '',
-        ...initialValues,
     })
+
+    const [prevImage, setPrevImage] = useState(null)
 
     useEffect(() => {
         console.log(formData)
@@ -47,15 +48,21 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
     const handleFileChange = (e) => {
         const file = e.target.files[ 0 ]
         console.log(file)
+
         if (file) {
-            const imageUrl = URL.createObjectURL(file)
-            setFormData(prev => ( { ...prev, image_url: imageUrl } ))
+            const  previwUrl= URL.createObjectURL(file)
+            setPrevImage(previwUrl)
+            setFormData(prev => ( { ...prev, image_url: file } ))
         }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        onSubmit(formData)
+        const formattedIngredients = formData.ingredients.map(item => ({
+            name: item.name,
+            amount: item.amount.toLowerCase(),
+        }));
+        onSubmit({ ...formData, ingredients: formattedIngredients})
     }
 
     return (
@@ -76,8 +83,8 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
                     />
                 </label>
 
-                { formData.image_url && (
-                    <img src={ formData.image_url } alt="Preview" className="mt-2 max-h-48 rounded-md object-cover"/>
+                { prevImage && (
+                    <img src={prevImage } alt="Preview" className="mt-2 max-h-48 rounded-md object-cover"/>
                 ) }
             </div>
 

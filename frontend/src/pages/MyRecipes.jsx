@@ -10,7 +10,7 @@ function AllRecipes () {
     const token = localStorage.getItem('token')
 
     useEffect(() => {
-        if (token === '') {
+        if (!token) {
             navigate('login')
         }
     }, [])

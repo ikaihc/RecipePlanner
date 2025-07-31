@@ -9,7 +9,7 @@ const CreateRecipe = () => {
     const token = localStorage.getItem('token')
 
     useEffect(() => {
-        if (token ==='') {
+        if (!token) {
             navigate('login')
         }
     }, [])
@@ -41,15 +41,23 @@ const CreateRecipe = () => {
         }
 
         // call createRecipe function to send request to backend
-        await createRecipe({
+        const result = await createRecipe({
           ...formData,
             ingredients: updatedIngredients,
         });
 
+        console.log(result)
+
         await loadUserRecipes()
 
+        if (result.status === 201) {
+            alert('Recipe uploaded successfully!')
+        }
+
+
+
         // refetch all public recipes after creating new recipe
-        alert('Recipe uploaded successfully!')
+
         navigate('/')
     }
 

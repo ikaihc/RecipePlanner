@@ -6,15 +6,20 @@ import { useEffect, useState } from 'react'
 const UpdateRecipe = () => {
     const { recipeId } = useParams()
     const { updateRecipe, getRecipeById, loadRecipes, ingredients, createIngredient } = useRecipes()
-
     const navigate = useNavigate()
     const [existingRecipe, setExistingRecipe] = useState(null)
+    const token = localStorage.getItem('token')
+
 
     useEffect(() => {
         (async function(){
             const recipe = await getRecipeById(recipeId)
             setExistingRecipe(recipe)
         })()
+
+        if (!token) {
+            navigate('login')
+        }
 
     }, [])
 

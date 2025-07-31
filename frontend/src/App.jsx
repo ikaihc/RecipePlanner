@@ -17,21 +17,21 @@ function App () {
             path: '/',
             element: <Layout/>,
             children: [
-                { index: true, element: <AllRecipes/> },
+                { index: true, element: <RecipesProvider><AllRecipes/></RecipesProvider> },
                 { path: 'login', element: <Login /> },
                 { path: 'register', element: <Register /> },
-                { path: 'favorites', element: <Favourites/> },
-                { path: 'upload', element: <CreateRecipe/> },
-                { path: ':recipeId/detail', element: <RecipeDetail/> },
-                { path: 'my-recipes', element: <MyRecipes/> },
-                { path: ':recipeId/update-recipe', element: <UpdateRecipe/> },
+                { path: 'favorites', element: <RecipesProvider><Favourites/></RecipesProvider> },
+                { path: 'upload', element: <RecipesProvider><CreateRecipe/></RecipesProvider> },
+                { path: ':recipeId/detail', element: <RecipesProvider><RecipeDetail/></RecipesProvider> },
+                { path: 'my-recipes', element: <RecipesProvider><MyRecipes/></RecipesProvider> },
+                { path: ':recipeId/update-recipe', element: <RecipesProvider><UpdateRecipe/></RecipesProvider> },
             ],
         }])  
 
     return (
-        <RecipesProvider>
+        // <RecipesProvider>
             <RouterProvider router={ router }/>
-        </RecipesProvider>
+        // </RecipesProvider>
 
     )
 }

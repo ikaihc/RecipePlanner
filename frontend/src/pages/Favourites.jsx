@@ -9,7 +9,7 @@ function AllRecipes () {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (token==='') {
+        if (!token) {
             navigate('login')
         }
     }, [])

@@ -125,7 +125,7 @@ export default function RecipesProvider ({ children }) {
                 const result = await api.post('/recipes', newRecipe)
                 dispatch({ type: 'create_recipe', payload: result.data })
                 console.log(result)
-                return result.data
+                return result
             }
             catch (err) {
                 console.error('Error loading recipes:', err)
