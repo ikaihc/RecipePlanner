@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import RecipeCard from '../components/feature/recipes/RecipeCard.jsx'
 import { useRecipes } from '../contexts/RecipeContext.jsx'
 

@@ -1,11 +1,10 @@
 import { useRecipes } from '../contexts/RecipeContext.jsx'
 import { useNavigate } from 'react-router-dom'
 import RecipeForm from '../components/feature/recipes/RecipeForm.jsx'
-import { useAuth } from '../components/auth/AuthContext.jsx'
 import { useEffect } from 'react'
 
 const CreateRecipe = () => {
-    const { createRecipe, ingredients,loadRecipes, loadIngredients, createIngredient } = useRecipes()
+    const { createRecipe, ingredients,loadUserRecipes, loadIngredients, createIngredient } = useRecipes()
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
 
@@ -47,8 +46,9 @@ const CreateRecipe = () => {
             ingredients: updatedIngredients,
         });
 
+        await loadUserRecipes()
+
         // refetch all public recipes after creating new recipe
-        await loadRecipes()
         alert('Recipe uploaded successfully!')
         navigate('/')
     }
