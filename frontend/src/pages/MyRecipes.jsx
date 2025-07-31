@@ -15,7 +15,6 @@ function AllRecipes () {
         }
     }, [])
 
-
     return (
         <>
             <h1 className="text-4xl font-semibold text-gray-800 my-5 text-center">My Recipes</h1>

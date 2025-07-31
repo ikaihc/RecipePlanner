@@ -5,11 +5,10 @@ import { useEffect, useState } from 'react'
 
 const UpdateRecipe = () => {
     const { recipeId } = useParams()
-    const { updateRecipe, getRecipeById, loadRecipes, ingredients, createIngredient,uploadImage } = useRecipes()
+    const { updateRecipe, getRecipeById, loadRecipes, ingredients, createIngredient,uploadImage ,loadUserRecipes} = useRecipes()
     const navigate = useNavigate()
     const [existingRecipe, setExistingRecipe] = useState(null)
     const token = localStorage.getItem('token')
-
 
     useEffect(() => {
         (async function(){
@@ -47,14 +46,18 @@ const UpdateRecipe = () => {
             })
         }
 
-        let image_url = ''
-        const result = await uploadImage({image: formData.image_url })
-        if (result.statusText === 'OK') {
-            image_url = result.data.url
+        let image_url = formData.image_url
+
+        if (typeof(formData.image_url) !== 'string') {
+            const result = await uploadImage({image: formData.image_url })
+            if (result.statusText === 'OK') {
+                image_url = result.data.url
+            }
         }
 
         await updateRecipe(recipeId,{ ...formData, ingredients: updatedIngredients ,image_url:image_url})
         await loadRecipes()
+        await loadUserRecipes()
         alert('Recipe updated successfully!')
         navigate(`/${ existingRecipe.id }/detail`)
     }
