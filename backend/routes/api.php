@@ -8,6 +8,7 @@ use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\ShoppingListController;
 use App\Http\Controllers\MealPlanController;
+use App\Http\Controllers\ImageUploadController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -57,5 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/meal-plans/day/{day}', [MealPlanController::class, 'byDay']);
     Route::apiResource('meal-plans', MealPlanController::class);
 
+    // Image Upload
+    Route::post('/upload-image', [ImageUploadController::class, 'upload']);
 
 });
