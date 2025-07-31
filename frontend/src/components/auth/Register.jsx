@@ -46,49 +46,11 @@ export default function Register() {
       return Object.keys(newErrors).length === 0;
     };
 
-
-  /*
-  const validateForm = () => {
-    const newErrors = {};
-
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const isPasswordStrong = password.length >= 6;
-    const isPasswordMatch = password === confirmPassword;
-
-    if (!isEmailValid) {
-      newErrors.email = '✖ Email must be in a valid format (e.g. name@example.com)';
-    }
-
-    if (!isPasswordStrong) {
-      newErrors.password = '✖ Password must be at least 6 characters';
-    }
-
-    if (!isPasswordMatch) {
-      newErrors.confirmPassword = '✖ Passwords do not match';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-  */
-
   
-
-
   const handleSubmit = async (e) => {
      e.preventDefault();
     if (!validateForm()) return;
     setErrors({});
- 
-    //   if (email === 'test@example.com') {
-    //     setErrors({
-    //     email: '✖ The email has already been taken.',
-    //   });
-    // } else {
-    //   setSuccess('✅ [DEV] Registered successfully!');
-    //   }
-
-
   
   try {
     const res = await fetch('http://127.0.0.1:8000/api/register', {
