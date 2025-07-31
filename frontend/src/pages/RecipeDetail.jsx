@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { useRecipes } from '../contexts/RecipeContext.jsx'
 
@@ -13,6 +13,8 @@ function RecipeDetail () {
     const [isFavorite, setIsFavorite] = useState()
     const [mealPlanSelections, setMealPlanSelections] = useState({})
     const [mealPlans, setMealPlans] = useState([])
+    const token = localStorage.getItem('token')
+    const navigate = useNavigate()
 
     useEffect(() => {
         (async function(){
@@ -32,6 +34,10 @@ function RecipeDetail () {
 
     const handleToggleFavorites =  async() => {
         if (!curRecipe) return
+
+        if (!token) {
+            navigate('/login')
+        }
 
         await toggleFavorite(recipeId)
         const updatedFavorites = await loadFavorites()
