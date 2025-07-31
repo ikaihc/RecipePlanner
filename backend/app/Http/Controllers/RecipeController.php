@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use App\Models\User;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -141,12 +142,21 @@ class RecipeController extends Controller
     {
         $recipe = Recipe::findOrFail($id);
 
+        // Ensure only the owner can delete
         if ($recipe->user_id !== Auth::id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
+        // Detach related ingredients (from pivot table)
+        $recipe->ingredients()->detach();
+
+        // Delete related favorites
+        Favorite::where('recipe_id', $recipe->id)->delete();
+
+        // Delete the recipe itself
         $recipe->delete();
 
         return response()->json(['message' => 'Recipe deleted']);
     }
+
 }
