@@ -17,10 +17,11 @@ class RecipeController extends Controller
         return response()->json($recipes);
     }
 
-    // Get recipes created by a specific user
-        public function userRecipes(User $user)
+
+    // Get recipes created by the authenticated user
+    public function userRecipes()
     {
-        $recipes = $user->recipes()->with('ingredients')->get();
+        $recipes = Auth::user()->recipes()->with('ingredients')->get();
 
         return response()->json($recipes);
     }

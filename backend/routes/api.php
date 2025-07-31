@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Recipes created by a specific user
-    Route::get('/users/{user}/recipes', [RecipeController::class, 'userRecipes']);
+    Route::get('/my-recipes', [RecipeController::class, 'userRecipes']);
 
     // Recipe with index and show excluded
     Route::apiResource('/recipes', RecipeController::class)->except(['index', 'show']);
