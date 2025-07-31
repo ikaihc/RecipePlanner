@@ -1,12 +1,22 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useRecipes } from '../contexts/RecipeContext.jsx'
 import RecipeForm from '../components/feature/recipes/RecipeForm.jsx'
+import { useEffect, useState } from 'react'
 
 const UpdateRecipe = () => {
     const { recipeId } = useParams()
-    const { updateRecipe, getRecipeById, loadIngredients, ingredients, createIngredient } = useRecipes()
+    const { updateRecipe, getRecipeById, loadRecipes, ingredients, createIngredient } = useRecipes()
+
     const navigate = useNavigate()
-    const existingRecipe = getRecipeById(recipeId)
+    const [existingRecipe, setExistingRecipe] = useState(null)
+
+    useEffect(() => {
+        (async function(){
+            const recipe = await getRecipeById(recipeId)
+            setExistingRecipe(recipe)
+        })()
+
+    }, [])
 
     const handleSubmit = async(formData) => {
         const updatedIngredients = []
@@ -23,15 +33,16 @@ const UpdateRecipe = () => {
                 ingredientId = newIngredient.id
 
                 // Update context list
-                loadIngredients() // refresh
+                // await loadIngredients() // refresh ingredients
             }
             updatedIngredients.push({
                 id: ingredientId,
-                amount: item.pivot.amount,
+                amount: item.amount,
             })
         }
 
         await updateRecipe(recipeId,{ ...formData, ingredients: updatedIngredients })
+        await loadRecipes()
         alert('Recipe updated successfully!')
         navigate(`/${ existingRecipe.id }/detail`)
     }

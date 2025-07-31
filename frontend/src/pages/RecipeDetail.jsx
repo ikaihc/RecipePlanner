@@ -7,34 +7,37 @@ const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sat
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner']
 
 function RecipeDetail () {
-    const { getRecipeById, favorites,toggleFavorite,loadFavorites} = useRecipes()
+    const { getRecipeById,toggleFavorite,favorites,loadFavorites} = useRecipes()
     const { recipeId } = useParams()
-    const curRecipe = getRecipeById(recipeId)
-
-    console.log(curRecipe)
-    const [isFavorite, setIsFavorite] = useState(favorites.some(fav => fav.id === curRecipe?.id))
+    const [curRecipe, setCurRecipe] = useState()
+    const [isFavorite, setIsFavorite] = useState()
     const [mealPlanSelections, setMealPlanSelections] = useState({})
     const [mealPlans, setMealPlans] = useState([])
 
     useEffect(() => {
-        console.log('mealSelections', mealPlanSelections)
-    }, [mealPlanSelections])
+        (async function(){
+            const recipe = await getRecipeById(recipeId)
+            setCurRecipe(recipe)
 
+            const favs = await loadFavorites()
+            const isFav = favs?.some(fav => fav.id === recipe.id)
+            setIsFavorite(isFav)
+        })()
+    }, [])
+
+    // This is for test
     useEffect(() => {
-        console.log('mealPlans', mealPlans)
-    }, [mealPlans])
-
-    useEffect(() => {
-        console.log('favorites', favorites)
-    }, [favorites])
-
+        console.log({ mealPlanSelections, mealPlans, isFavorite, favorites })
+    }, [mealPlanSelections, mealPlans, isFavorite, favorites])
 
     const handleToggleFavorites =  async() => {
         if (!curRecipe) return
-        setIsFavorite(prev=>!prev)
-        await toggleFavorite(recipeId)
-        await loadFavorites()
 
+        await toggleFavorite(recipeId)
+        const updatedFavorites = await loadFavorites()
+
+        const isFav = updatedFavorites?.some(fav => fav.id === curRecipe.id)
+        setIsFavorite(isFav)
     }
 
     const handleCheckboxChange = (day, meal) => {
@@ -79,6 +82,7 @@ function RecipeDetail () {
 
         setMealPlanSelections({})
     }
+
     if (!curRecipe) {
         return (
             <>
@@ -168,7 +172,7 @@ function RecipeDetail () {
                         <h3 className="text-2xl font-semibold text-indigo-600 mb-2">Ingredients</h3>
                         <ul className="list-disc list-inside text-gray-800 space-y-1">
                             { Array.isArray(curRecipe.ingredients) ? ( curRecipe.ingredients.map((ingredient, idx) => (
-                                <li key={ idx }>{ ingredient.name } { ingredient.pivot.amount }</li>
+                                <li key={ idx }>{ ingredient.name } { ingredient.amount }</li>
                             )) ) : ( <li>No ingredients available.</li> ) }
                         </ul>
                     </div>

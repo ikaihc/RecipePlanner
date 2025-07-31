@@ -41,15 +41,15 @@ class RecipeController extends Controller
             ], 404);
         }
 
-        // Only keep ingredient id and name
+        // Include id, name, and amount from pivot
         $ingredients = $recipe->ingredients->map(function ($ingredient) {
             return [
                 'id' => $ingredient->id,
-                'name' => $ingredient->name
+                'name' => $ingredient->name,
+                'amount' => $ingredient->pivot->amount,
             ];
         });
 
-        // Add filtered ingredients to recipe data
         $data = $recipe->toArray();
         $data['ingredients'] = $ingredients;
 

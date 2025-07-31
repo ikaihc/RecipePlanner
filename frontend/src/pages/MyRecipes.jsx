@@ -7,11 +7,14 @@ import Button from '../components/common/Button.jsx'
 function AllRecipes () {
     const { userRecipes, loadUserRecipes } = useRecipes()
     const navigate = useNavigate()
+
+    // auth user after login (plan to get from authUser context)
     const authUser = {
         user_id: 11,
         username: 'Jame Smith',
     }
 
+    // initially get all recipes created by auth user
     useEffect(() => {
         loadUserRecipes(authUser.user_id)
     }, [authUser.user_id])

@@ -4,12 +4,19 @@ import { Link } from 'react-router'
 import { useRecipes } from '../../../contexts/RecipeContext.jsx'
 
 function RecipeCard ({ id,title, description, image_url ,edit}) {
+    const {deleteRecipe,loadRecipes,loadUserRecipes} = useRecipes()
 
-    const {deleteRecipe} = useRecipes()
+    // auth user after login (plan to get from authUser context)
+    const authUser = {
+        user_id:11
+    }
 
+    // after delete recipes, refetch all recipes and user recipes
     const handleDeleteRecipe = async()=> {
-        await deleteRecipe(id)
         alert('Please confirm to delete the recipe')
+        await deleteRecipe(id)
+        await loadRecipes()
+        await loadUserRecipes(authUser.user_id)
     }
     return (
         <div

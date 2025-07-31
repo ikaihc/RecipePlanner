@@ -7,9 +7,10 @@ const initialState = {
     allRecipes: [],
     favorites: [],
     ingredients: [],
-    userRecipes:[]
+    userRecipes: [],
 }
 
+// update react  state based on actions
 const recipeReducer = (state, action) => {
     switch (action.type) {
         case 'load_recipes':
@@ -43,10 +44,6 @@ const recipeReducer = (state, action) => {
                 favorites: action.payload,
             }
         case'add_to_favorites':
-            if (state.favorites.some(recipe => recipe.id === action.payload.id)) {
-                return state
-            }
-
             return {
                 ...state,
                 favorites:
@@ -74,13 +71,15 @@ const recipeReducer = (state, action) => {
                         ],
                 }
 
-            } else if (action.payload.status === 'removed') {
-                return {
-                    ...state,
-                    favorites: state.favorites.filter(recipe => recipe.id !== action.payload.id),
-                }
+            } else
+                if (action.payload.status === 'removed') {
+                    return {
+                        ...state,
+                        favorites: state.favorites.filter(recipe => recipe.id !== action.payload.id),
+                    }
 
-            }
+                }
+            break
         case 'load_ingredients':
             return {
                 ...state,
@@ -95,7 +94,7 @@ const recipeReducer = (state, action) => {
         case 'load_user_recipes':
             return {
                 ...state,
-                userRecipes:action.payload
+                userRecipes: action.payload,
             }
         default:
             return state
@@ -107,6 +106,7 @@ export default function RecipesProvider ({ children }) {
     const [state, dispatch] = useReducer(recipeReducer, initialState)
 
     const actions = {
+        // get all public recipes from backend
         loadRecipes: async() => {
             try {
                 const result = await api.get('/recipes')
@@ -117,6 +117,8 @@ export default function RecipesProvider ({ children }) {
                 console.error('Error loading recipes:', err)
             }
         },
+
+        // create new recipe
         createRecipe: async(newRecipe) => {
             try {
                 const result = await api.post('/recipes', newRecipe)
@@ -128,51 +130,72 @@ export default function RecipesProvider ({ children }) {
                 console.error('Error loading recipes:', err)
             }
         },
+
+        // update recipe
         updateRecipe: async(id, updatedRecipe) => {
             const result = await api.put(`/recipes/${ id }`, updatedRecipe)
             dispatch({ type: 'update_recipe', payload: result.data })
 
         },
+
+        // delete recipe
         deleteRecipe: async(id) => {
             await api.delete(`/recipes/${ id }`)
             dispatch({ type: 'delete_recipe', payload: id })
 
         },
-        getRecipeById: (id) => {
-            return state.allRecipes.find(recipe => recipe.id === Number(id))
+
+        // get recipe by id
+        getRecipeById: async(id) => {
+            const result = await api.get(`/recipes/${ id }`)
+            return result.data
         },
 
+        // load all favorites recipes
         loadFavorites: async() => {
             const result = await api.get('/favorites')
             dispatch({ type: 'load_favorites', payload: result.data })
+            return result.data
         },
+
+        // add or remove from favorites
         toggleFavorite: async(id) => {
             const result = await api.post('/favorites/toggle', { recipe_id: id })
             dispatch({ type: 'toggle_favorite', payload: result.data })
-
         },
 
+
+        // load all ingredients
         loadIngredients: async() => {
             const result = await api.get('/ingredients')
             dispatch({ type: 'load_ingredients', payload: result.data })
         },
+
+        // create new ingredient
         createIngredient: async(newIngredient) => {
             const result = await api.post('/ingredients', newIngredient)
             console.log(result)
             dispatch({ type: 'create_ingredient', payload: result.data })
             return result.data
         },
-        loadUserRecipes:async(user_id)=>{
-            const result= await api.get(`/users/${user_id}/recipes`)
-            dispatch({type:'load_user_recipes',payload:result.data})
 
-    }
+        //load all recipes created by auth user
+        loadUserRecipes: async(user_id) => {
+            const result = await api.get(`/users/${ user_id }/recipes`)
+            dispatch({ type: 'load_user_recipes', payload: result.data })
+
+        },
     }
 
     useEffect(() => {
-        // actions.loadRecipes()
-        actions.loadIngredients()
-        actions.loadFavorites()
+        (async function(){
+            // Load ingredients initially
+            await actions.loadRecipes()
+            await actions.loadIngredients()
+            await actions.loadFavorites()
+        })()
+
+
 
     }, [])
 
@@ -182,7 +205,7 @@ export default function RecipesProvider ({ children }) {
     }
     return (
         <RecipesContext.Provider value={ value }>
-                { children }
+            { children }
         </RecipesContext.Provider>
     )
 }

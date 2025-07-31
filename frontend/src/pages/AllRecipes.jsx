@@ -3,11 +3,7 @@ import RecipeCard from '../components/feature/recipes/RecipeCard.jsx'
 import { useRecipes } from '../contexts/RecipeContext.jsx'
 
 function AllRecipes () {
-    const { allRecipes, loadRecipes } = useRecipes()
-
-    useEffect(() => {
-        loadRecipes()
-    }, [])
+    const { allRecipes } = useRecipes()
 
     return (
         <>

@@ -1,16 +1,12 @@
 import { useRecipes } from '../contexts/RecipeContext.jsx'
 import { useNavigate } from 'react-router-dom'
 import RecipeForm from '../components/feature/recipes/RecipeForm.jsx'
-import { useEffect } from 'react'
 
 const CreateRecipe = () => {
     const { createRecipe, ingredients,loadRecipes, loadIngredients, createIngredient } = useRecipes()
-    useEffect(() => {
-        loadIngredients()
-    }, [])
-
     const navigate = useNavigate()
 
+    // pass this function to recipe form to create new recipe
     const handleSubmit = async(formData) => {
         const updatedIngredients = []
 
@@ -35,12 +31,13 @@ const CreateRecipe = () => {
             })
         }
 
-
+        // call createRecipe function to send request to backend
         await createRecipe({
           ...formData,
             ingredients: updatedIngredients,
         });
 
+        // refetch all public recipes after creating new recipe
         await loadRecipes()
         alert('Recipe uploaded successfully!')
         navigate('/all-recipes')
