@@ -3,12 +3,8 @@ import { IoIosMenu, IoIosClose } from 'react-icons/io'
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 
-
-
-
 const navItems = [
-    { label: 'Home', path: '/' },
-    { label: 'All Recipes', path: '/all-recipes' },
+    { label: 'All Recipes', path: '/' },
     { label: 'My Recipes', path: '/my-recipes' },
     { label: 'Favorites', path: '/favorites' },
     { label: 'Upload', path: '/upload' },

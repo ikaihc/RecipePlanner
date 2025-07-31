@@ -46,6 +46,7 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
 
     const handleFileChange = (e) => {
         const file = e.target.files[ 0 ]
+        console.log(file)
         if (file) {
             const imageUrl = URL.createObjectURL(file)
             setFormData(prev => ( { ...prev, image_url: imageUrl } ))

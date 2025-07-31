@@ -190,10 +190,11 @@ export default function RecipesProvider ({ children }) {
 
     useEffect(() => {
         (async function(){
-            // Load ingredients initially
+            // Load data initially
             await actions.loadRecipes()
             await actions.loadIngredients()
             await actions.loadFavorites()
+            await actions.loadUserRecipes()
         })()
 
 

@@ -3,17 +3,19 @@ import RecipeCard from '../components/feature/recipes/RecipeCard.jsx'
 import { useRecipes } from '../contexts/RecipeContext.jsx'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/common/Button.jsx'
+import { useAuth } from '../components/auth/AuthContext.jsx'
 
 function AllRecipes () {
-    const { userRecipes, loadUserRecipes } = useRecipes()
+    const { userRecipes } = useRecipes()
     const navigate = useNavigate()
+    const token = localStorage.getItem('token')
 
-
-
-    // initially get all recipes created by auth user
     useEffect(() => {
-        loadUserRecipes()
+        if (token ==='') {
+            navigate('login')
+        }
     }, [])
+
 
 
     return (
