@@ -2,37 +2,47 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { useRecipes } from '../contexts/RecipeContext.jsx'
+import { useMealPlan } from '../contexts/MealPlanContext.jsx'
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner']
 
 function RecipeDetail () {
-    const { getRecipeById,toggleFavorite,favorites,loadFavorites} = useRecipes()
+    const { getRecipeById, toggleFavorite, favorites, loadFavorites } = useRecipes()
+    const { mealPlans, loadMealPlans ,addToMealPlans} = useMealPlan()
+
     const { recipeId } = useParams()
     const [curRecipe, setCurRecipe] = useState()
+
     const [isFavorite, setIsFavorite] = useState()
     const [mealPlanSelections, setMealPlanSelections] = useState({})
-    const [mealPlans, setMealPlans] = useState([])
+
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
 
     useEffect(() => {
-        (async function(){
+        ( async function () {
+            await loadMealPlans()
+        } )()
+    }, [])
+
+    useEffect(() => {
+        ( async function () {
             const recipe = await getRecipeById(recipeId)
             setCurRecipe(recipe)
 
             const favs = await loadFavorites()
             const isFav = favs?.some(fav => fav.id === recipe.id)
             setIsFavorite(isFav)
-        })()
+        } )()
     }, [])
 
     // This is for test
     useEffect(() => {
         console.log({ mealPlanSelections, mealPlans, isFavorite, favorites })
-    }, [mealPlanSelections, mealPlans, isFavorite, favorites])
+    }, [mealPlanSelections, isFavorite, favorites])
 
-    const handleToggleFavorites =  async() => {
+    const handleToggleFavorites = async() => {
         if (!curRecipe) return
 
         if (!token) {
@@ -46,6 +56,7 @@ function RecipeDetail () {
         setIsFavorite(isFav)
     }
 
+    // handle meal plan checkbox
     const handleCheckboxChange = (day, meal) => {
         setMealPlanSelections(prev => {
             const current = prev[ day ] || []
@@ -59,31 +70,35 @@ function RecipeDetail () {
         })
     }
 
+    // handle add to meal plans
     const handleAddToMealPlan = () => {
         if (Object.keys(mealPlanSelections).length === 0) alert(
             'Please select at least one meal to add to your meal plan!')
 
-        setMealPlans(prev => {
-            const newItems = []
+        // setMealPlans(prev => {
+        const newItems = []
 
-            for (const [day, meals] of Object.entries(mealPlanSelections)) {
-                meals.forEach(meal => {
-                    const exists = prev.some(
-                        item =>
-                            item.date === day &&
-                            item.meal_type === meal &&
-                            item.recipe.id === curRecipe.id,
-                    )
-                    if (!exists) {
-                        newItems.push({
-                            date: day,
-                            meal_type: meal,
-                            recipe: curRecipe,
-                        })
-                    }
-                })
-            }
-            return [...prev, ...newItems]
+        for (const [day, meals] of Object.entries(mealPlanSelections)) {
+            meals.forEach(meal => {
+                const exists = mealPlans.some(
+                    item =>
+                        item.day_of_week === day &&
+                        item.meal_type === meal &&
+                        item.recipe_id === recipeId,
+                )
+                if (!exists) {
+                    newItems.push({
+                        day_of_week: day,
+                        meal_type: meal.toLowerCase(),
+                        recipe_id: recipeId,
+                    })
+                }
+            })
+        }
+
+        newItems.forEach(async(item) => {
+            const result = await addToMealPlans(item)
+            console.log(result)
         })
 
         setMealPlanSelections({})
@@ -105,7 +120,7 @@ function RecipeDetail () {
             <div className="grid grid-cols-1 md:grid-cols-8 gap-10 p-6 sm:p-16 justify-items-center">
                 {/* Left */ }
                 <div className="col-span-3">
-                    <div className='h-80 w-80'>
+                    <div className="h-80 w-80">
                         <img
                             src={ curRecipe.image_url }
                             alt={ curRecipe.title }
@@ -115,7 +130,7 @@ function RecipeDetail () {
 
                     <div className="flex my-4 cursor-pointer" onClick={ handleToggleFavorites }>
                         { isFavorite ? <IoIosHeart size={ 24 } color="red"/> : <IoIosHeartEmpty size={ 24 }/> }
-                        <span>{isFavorite ? "Remove from Favorites" : "Add to Favorites" }</span>
+                        <span>{ isFavorite ? 'Remove from Favorites' : 'Add to Favorites' }</span>
                     </div>
 
                     <div className="bg-indigo-50 p-4 rounded-md mt-2">
@@ -162,15 +177,15 @@ function RecipeDetail () {
                         <p className="text-gray-600 leading-relaxed">{ curRecipe.description }</p>
                     ) }
 
-                    <div className='flex gap-2'>
-                        <div className='bg-indigo-500 p-1 rounded-lg text-white text-sm'>Prepare
+                    <div className="flex gap-2">
+                        <div className="bg-indigo-500 p-1 rounded-lg text-white text-sm">Prepare
                             Time: { curRecipe.prep_time_minutes } mins
                         </div>
-                        <div className='bg-indigo-500 p-1 rounded-lg text-white text-sm'>Cook
+                        <div className="bg-indigo-500 p-1 rounded-lg text-white text-sm">Cook
                             Time: { curRecipe.prep_time_minutes } mins
                         </div>
                         <div
-                            className='bg-indigo-500 p-1 rounded-lg text-white text-sm'>Servings: { curRecipe.servings }</div>
+                            className="bg-indigo-500 p-1 rounded-lg text-white text-sm">Servings: { curRecipe.servings }</div>
                     </div>
 
                     {/* Ingredients */ }

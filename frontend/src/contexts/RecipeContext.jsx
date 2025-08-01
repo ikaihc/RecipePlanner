@@ -8,7 +8,6 @@ const initialState = {
     favorites: [],
     ingredients: [],
     userRecipes: [],
-
 }
 
 // update react  state based on actions
@@ -112,7 +111,6 @@ export default function RecipesProvider ({ children }) {
             try {
                 const result = await api.get('/recipes')
                 dispatch({ type: 'load_recipes', payload: result.data })
-                console.log(result.data)
             }
             catch (err) {
                 console.error('Error loading recipes:', err)
