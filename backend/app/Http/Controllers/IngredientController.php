@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Ingredient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class IngredientController extends Controller
 {
@@ -12,6 +11,7 @@ class IngredientController extends Controller
     public function index()
     {
         $ingredients = Ingredient::all();
+
         return response()->json($ingredients);
     }
 
@@ -20,10 +20,10 @@ class IngredientController extends Controller
     {
         $ingredient = Ingredient::find($id);
 
-        if (!$ingredient) {
+        if (! $ingredient) {
             return response()->json([
                 'message' => 'Ingredient not found',
-                'id' => $id
+                'id' => $id,
             ], 404);
         }
 
@@ -54,10 +54,10 @@ class IngredientController extends Controller
         // Find the ingredient by ID
         $ingredient = Ingredient::find($id);
 
-        if (!$ingredient) {
+        if (! $ingredient) {
             return response()->json([
                 'message' => 'Ingredient not found',
-                'id' => $id
+                'id' => $id,
             ], 404);
         }
 
@@ -79,10 +79,10 @@ class IngredientController extends Controller
     {
         $ingredient = Ingredient::find($id);
 
-        if (!$ingredient) {
+        if (! $ingredient) {
             return response()->json([
                 'message' => 'Ingredient not found',
-                'id' => $id
+                'id' => $id,
             ], 404);
         }
 
@@ -90,7 +90,7 @@ class IngredientController extends Controller
 
         return response()->json([
             'message' => 'Ingredient deleted successfully',
-            'id' => $id
+            'id' => $id,
         ]);
     }
 

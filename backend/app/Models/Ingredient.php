@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Ingredient extends Model
 {
@@ -19,7 +19,7 @@ class Ingredient extends Model
                     ->withPivot('amount')
                     ->withTimestamps();
     }
-        public function shoppingListItems()
+    public function shoppingListItems()
     {
         return $this->hasMany(ShoppingList::class);
     }

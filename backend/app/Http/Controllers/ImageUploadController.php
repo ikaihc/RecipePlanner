@@ -18,7 +18,7 @@ class ImageUploadController extends Controller
 
         return response()->json([
             'message' => 'Image uploaded successfully',
-            'url' => asset('uploads/' . $imageName)
+            'url' => asset('uploads/' . $imageName),
         ]);
     }
 }

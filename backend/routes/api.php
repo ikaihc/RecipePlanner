@@ -1,16 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
-use App\Http\Controllers\RecipeController;
-use App\Http\Controllers\IngredientController;
-use App\Http\Controllers\ShoppingListController;
-use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\ImageUploadController;
-use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\MealPlanController;
+use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\ShoppingListController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -39,7 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Recipe with index and show excluded
     Route::apiResource('/recipes', RecipeController::class)->except(['index', 'show']);
-    
+
     // Ingredients with index and show excluded
     Route::apiResource('/ingredients', IngredientController::class)->except(['index', 'show']);
 

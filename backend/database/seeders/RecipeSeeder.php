@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ingredient;
 use App\Models\Recipe;
 use App\Models\User;
-use App\Models\Ingredient;
 use Illuminate\Database\Seeder;
 
 class RecipeSeeder extends Seeder
@@ -16,6 +16,7 @@ class RecipeSeeder extends Seeder
 
         if ($users->isEmpty() || $ingredients->isEmpty()) {
             $this->command->warn("⚠️ Please seed users and ingredients first.");
+
             return;
         }
 
@@ -52,7 +53,7 @@ class RecipeSeeder extends Seeder
             // Attach 2–4 random ingredients with amounts
             $recipe->ingredients()->attach(
                 $ingredients->random(rand(2, 4))->pluck('id')->mapWithKeys(fn ($id) => [
-                    $id => ['amount' => rand(1, 5) . ' units']
+                    $id => ['amount' => rand(1, 5) . ' units'],
                 ])->toArray()
             );
         }

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Favorite;
+use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
-
     // Get all favorites of a user
     public function index()
     {
@@ -66,7 +65,7 @@ class FavoriteController extends Controller
     }
 
 
-    // // Create a Favorite  
+    // // Create a Favorite
     // public function store(Request $request)
     // {
     //     // Validate only the recipe_id

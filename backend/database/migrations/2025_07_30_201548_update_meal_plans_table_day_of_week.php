@@ -13,7 +13,7 @@ class UpdateMealPlansTableDayofweek extends Migration
 
             $table->enum('day_of_week', [
                 'Monday', 'Tuesday', 'Wednesday',
-                'Thursday', 'Friday', 'Saturday', 'Sunday'
+                'Thursday', 'Friday', 'Saturday', 'Sunday',
             ])->after('user_id');
         });
     }

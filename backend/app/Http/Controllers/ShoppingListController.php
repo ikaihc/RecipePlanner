@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ShoppingList;
 use App\Models\Recipe;
+use App\Models\ShoppingList;
 use Illuminate\Http\Request;
 
 class ShoppingListController extends Controller
@@ -34,6 +34,7 @@ class ShoppingListController extends Controller
 
         if ($item) {
             $item->delete();
+
             return response()->json([
                 'message' => 'Ingredient removed from shopping list.',
                 'status' => 'removed',

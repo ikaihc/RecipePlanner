@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use App\Models\Recipe;
 use App\Models\User;
-use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,6 +14,7 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::where('is_public', true)->get(); // only show public recipes
+
         return response()->json($recipes);
     }
 
@@ -36,10 +37,10 @@ class RecipeController extends Controller
         //     return response()->json(['message' => 'Unauthorized'], 403);
         // }
 
-        if (!$recipe) {
+        if (! $recipe) {
             return response()->json([
                 'message' => 'Recipe not found',
-                'id' => $id
+                'id' => $id,
             ], 404);
         }
 
@@ -76,16 +77,16 @@ class RecipeController extends Controller
         ]);
 
         $recipeData = $request->only([
-            'title', 'instructions', 'description', 
-            'prep_time_minutes', 'cook_time_minutes', 
-            'servings', 'image_url', 'is_public'
+            'title', 'instructions', 'description',
+            'prep_time_minutes', 'cook_time_minutes',
+            'servings', 'image_url', 'is_public',
         ]);
 
         $recipe = Auth::user()->recipes()->create($recipeData);
 
         foreach ($request->ingredients as $ingredientInput) {
             $recipe->ingredients()->attach($ingredientInput['id'], [
-                'amount' => $ingredientInput['amount']
+                'amount' => $ingredientInput['amount'],
             ]);
         }
 
@@ -118,7 +119,7 @@ class RecipeController extends Controller
         $recipe->update($request->only([
             'title', 'instructions', 'description',
             'prep_time_minutes', 'cook_time_minutes',
-            'servings', 'image_url', 'is_public'
+            'servings', 'image_url', 'is_public',
         ]));
 
         // If ingredients are provided, sync them

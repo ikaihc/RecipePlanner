@@ -127,7 +127,7 @@ class MealPlanController extends Controller
     {
         $validDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
-        if (!in_array($day, $validDays)) {
+        if (! in_array($day, $validDays)) {
             return response()->json(['message' => 'Invalid day'], 400);
         }
 

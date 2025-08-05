@@ -25,4 +25,3 @@ class ShoppingList extends Model
         return $this->belongsTo(Ingredient::class);
     }
 }
-
