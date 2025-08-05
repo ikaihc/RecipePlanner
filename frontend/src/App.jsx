@@ -10,6 +10,8 @@ import Layout from './components/common/Layout.jsx'
 import Login from './components/auth/Login.jsx'
 import Register from './components/auth/Register.jsx'
 import UpdateRecipe from './pages/UpdateRecipe.jsx'
+import ShoppingList from './pages/ShoppingList.jsx'
+import MealsOfTheWeek from './pages/MealsOfTheWeek.jsx'
 import { MealPlanProvider } from './contexts/MealPlanContext.jsx'
 
 function App () {
@@ -26,6 +28,8 @@ function App () {
                 { path: ':recipeId/detail', element: <RecipesProvider><MealPlanProvider><RecipeDetail/></MealPlanProvider></RecipesProvider> },
                 { path: 'my-recipes', element: <RecipesProvider><MyRecipes/></RecipesProvider> },
                 { path: ':recipeId/update-recipe', element: <RecipesProvider><UpdateRecipe/></RecipesProvider> },
+                { path: 'my-shopping-list', element: <ShoppingList /> },
+                { path: 'meals-of-the-week', element: <MealPlanProvider><MealsOfTheWeek /></MealPlanProvider> },
             ],
         }])
 

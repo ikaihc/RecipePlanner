@@ -18,6 +18,7 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
     })
 
     const [prevImage, setPrevImage] = useState(null)
+    const [errors, setErrors] = useState({})
 
     useEffect(() => {
         console.log(formData)
@@ -58,32 +59,75 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
         }
     }
 
+    const validateForm = () => {
+        const newErrors = {}
+        
+        // Required fields validation
+        if (!formData.title.trim()) {
+            newErrors.title = 'Recipe title is required'
+        }
+        if (!formData.description.trim()) {
+            newErrors.description = 'Description is required'
+        }
+        if (!formData.instructions.trim()) {
+            newErrors.instructions = 'Instructions are required'
+        }
+        
+        // Image validation (required for new recipes)
+        if (!isEdit && !formData.image_url) {
+            newErrors.image_url = 'Please upload an image for your recipe'
+        }
+        
+        // Ingredients validation
+        const validIngredients = formData.ingredients.filter(ingredient => 
+            ingredient.name && ingredient.name.trim() && ingredient.amount && ingredient.amount.trim()
+        )
+        if (validIngredients.length === 0) {
+            newErrors.ingredients = 'At least one ingredient is required'
+        }
+        
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        const formattedIngredients = formData.ingredients.map(item => ( {
-            name: item.name,
-            amount: item.amount.toLowerCase(),
-        } ))
+        
+        if (!validateForm()) {
+            return
+        }
+        
+        const formattedIngredients = formData.ingredients
+            .filter(item => item.name && item.name.trim() && item.amount && item.amount.trim())
+            .map(item => ({
+                name: item.name,
+                amount: item.amount.toLowerCase(),
+            }))
+        
         onSubmit({ ...formData, ingredients: formattedIngredients })
     }
 
     return (
         <form onSubmit={ handleSubmit } className="space-y-6">
-            <Input label="Recipe Title" name="title" id="title" required value={ formData.title }
-                   onChange={ handleChange }/>
-            <TextArea label="Description" name="description" id="description" required value={ formData.description }
-                      onChange={ handleChange } rows="3"/>
+            <Input label="Recipe Title *" name="title" id="title" required value={ formData.title }
+                   onChange={ handleChange } error={errors.title}/>
+            <TextArea label="Description *" name="description" id="description" required value={ formData.description }
+                      onChange={ handleChange } rows="3" error={errors.description}/>
 
             <div>
                 <label
                     className="w-30 border border-gray-300 rounded-md p-2 cursor-pointer flex items-center gap-2">
-                    Upload image
+                    Upload image {!isEdit && '*'}
                     <input
                         name="image_url" id="image_url" type="file" required={ !isEdit }
                         onChange={ handleFileChange }
                         className="hidden"
                     />
                 </label>
+
+                {errors.image_url && (
+                    <p className="text-red-500 text-sm mt-1">{errors.image_url}</p>
+                )}
 
                 { (prevImage || formData.image_url )&& (
                     <img src={ prevImage || formData.image_url } alt="Preview" className="mt-2 max-h-48 rounded-md object-cover"/>
@@ -102,9 +146,9 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
             <div>
                 { formData.ingredients.map((ingredient, index) => (
                     <div key={ index } className="flex gap-2 items-center">
-                        <Input label="Ingredient" name="name" required value={ ingredient.name || '' }
+                        <Input label="Ingredient *" name="name" required value={ ingredient.name || '' }
                                onChange={ (e) => handleIngredientChange(index, 'name', e.target.value) }/>
-                        <Input label="Amount" name="amount" required value={ ingredient.amount || '' }
+                        <Input label="Amount *" name="amount" required value={ ingredient.amount || '' }
                                onChange={ (e) => handleIngredientChange(index, 'amount', e.target.value) }/>
                         { formData.ingredients.length > 1 && (
                             <button type="button" onClick={ () => removeIngredientField(index) }
@@ -112,6 +156,10 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
                         ) }
                     </div>
                 )) }
+
+                {errors.ingredients && (
+                    <p className="text-red-500 text-sm mt-1">{errors.ingredients}</p>
+                )}
 
                 <button type="button" onClick={ addIngredientField }
                         className="text-indigo-600 mt-1 text-sm hover:underline">
@@ -124,8 +172,8 @@ const RecipeForm = ({ initialValues = {}, onSubmit, submitButtonLabel = 'Submit'
                        checked={ formData.is_public } onChange={ handleChange }/>
             </div>
 
-            <TextArea label="Instructions" name="instructions" id="instructions" required
-                      value={ formData.instructions } onChange={ handleChange } rows="5"/>
+            <TextArea label="Instructions *" name="instructions" id="instructions" required
+                      value={ formData.instructions } onChange={ handleChange } rows="5" error={errors.instructions}/>
 
             <Button type="submit">{ submitButtonLabel }</Button>
         </form>

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
+import { IoCartOutline } from 'react-icons/io5'
 import { useRecipes } from '../contexts/RecipeContext.jsx'
 import { useMealPlan } from '../contexts/MealPlanContext.jsx'
+import api from '../api/api'
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner']
@@ -16,6 +18,7 @@ function RecipeDetail () {
 
     const [isFavorite, setIsFavorite] = useState()
     const [mealPlanSelections, setMealPlanSelections] = useState({})
+    const [addingToShoppingList, setAddingToShoppingList] = useState(false)
 
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
@@ -104,6 +107,24 @@ function RecipeDetail () {
         setMealPlanSelections({})
     }
 
+    // Add all ingredients to shopping list
+    const handleAddToShoppingList = async () => {
+        if (!token) {
+            navigate('/login')
+            return
+        }
+
+        try {
+            setAddingToShoppingList(true)
+            await api.post(`/shopping-list/from-recipe/${recipeId}`)
+            alert('Ingredients added to shopping list!')
+        } catch (error) {
+            alert(error.message || 'Failed to add ingredients to shopping list')
+        } finally {
+            setAddingToShoppingList(false)
+        }
+    }
+
     if (!curRecipe) {
         return (
             <>
@@ -116,7 +137,7 @@ function RecipeDetail () {
 
     return (
         <>
-            <h1 className="text-4xl font-semibold text-gray-800 my-5 text-center">Recipe Detail { recipeId }</h1>
+            {/* <h1 className="text-4xl font-semibold text-gray-800 my-5 text-center">Recipe Detail { recipeId }</h1> */}
             <div className="grid grid-cols-1 md:grid-cols-8 gap-10 p-6 sm:p-16 justify-items-center">
                 {/* Left */ }
                 <div className="col-span-3">
@@ -132,6 +153,15 @@ function RecipeDetail () {
                         { isFavorite ? <IoIosHeart size={ 24 } color="red"/> : <IoIosHeartEmpty size={ 24 }/> }
                         <span>{ isFavorite ? 'Remove from Favorites' : 'Add to Favorites' }</span>
                     </div>
+
+                    <button
+                        onClick={ handleAddToShoppingList }
+                        disabled={ addingToShoppingList }
+                        className="w-full p-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium rounded-md transition-colors flex items-center justify-center gap-2 mb-4"
+                    >
+                        <IoCartOutline size={ 20 } />
+                        { addingToShoppingList ? 'Adding...' : 'Add Ingredients to Shopping List' }
+                    </button>
 
                     <div className="bg-indigo-50 p-4 rounded-md mt-2">
                         <h4 className="text-xl font-semibold mb-2 text-gray-700">Add to Meal of the Week:</h4>

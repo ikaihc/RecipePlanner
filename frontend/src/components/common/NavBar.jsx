@@ -97,7 +97,7 @@ const Navbar = () => {
                 <div className="flex justify-between h-16">
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center text-xl font-bold text-indigo-600">
-                        🍳 MealPlanner
+                        🍳 RecipePlanner
                     </div>
 
                     {/* Desktop Menu */}

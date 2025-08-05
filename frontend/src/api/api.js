@@ -32,7 +32,7 @@ api.interceptors.response.use(
     },
     (error) => {
         if (error.response?.status === 401) {
-            return Promise.reject(new Error('Email or Password is not correct. Please Try Again!'))
+            return Promise.reject(new Error('Unauthorized - Please login to continue'))
         }
 
         if (error.response?.status === 403) {

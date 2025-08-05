@@ -44,6 +44,7 @@ class MealPlanController extends Controller
             'recipe_id' => 'required|exists:recipes,id',
         ]);
 
+        // Check if the same recipe is already added for that day and meal
         $exists = MealPlan::where('user_id', auth()->id())
             ->where('day_of_week', $request->day_of_week)
             ->where('meal_type', $request->meal_type)
@@ -60,6 +61,9 @@ class MealPlanController extends Controller
             'meal_type' => $request->meal_type,
             'recipe_id' => $request->recipe_id,
         ]);
+
+        // Load the recipe relationship before returning
+        $mealPlan->load('recipe:id,title');
 
         return response()->json($mealPlan, 201);
     }
