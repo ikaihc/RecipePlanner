@@ -22,7 +22,7 @@ function RecipeCard ({ id, title, description, image_url, edit, page }) {
             const isFav = favs?.some(fav => fav.id === id)
             setIsFavorite(isFav)
         } )()
-    }, [])
+    }, [id, loadFavorites])
 
     const handleToggleFavorites = async() => {
 

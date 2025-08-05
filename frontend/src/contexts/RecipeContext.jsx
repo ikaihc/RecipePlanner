@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer } from 'react'
+import { createContext, useEffect, useReducer, useCallback, useContext } from 'react'
 import api from '../api/api.js'
 
 const RecipesContext = createContext()
@@ -105,7 +105,7 @@ const recipeReducer = (state, action) => {
 export default function RecipesProvider ({ children }) {
     const [state, dispatch] = useReducer(recipeReducer, initialState)
 
-    const actions = {
+    const actions = useCallback({
         // get all public recipes from backend
         loadRecipes: async() => {
             try {
@@ -192,7 +192,7 @@ export default function RecipesProvider ({ children }) {
             return result
 
         }
-    }
+    }, [])
 
     useEffect(() => {
         (async function(){
@@ -205,7 +205,7 @@ export default function RecipesProvider ({ children }) {
 
 
 
-    }, [])
+    }, [actions])
 
     const value = {
         ...state,
@@ -218,6 +218,7 @@ export default function RecipesProvider ({ children }) {
     )
 }
 
-export const useRecipes = () => {
+// eslint-disable-next-line react-refresh/only-export-components
+export function useRecipes() {
     return useContext(RecipesContext)
 }

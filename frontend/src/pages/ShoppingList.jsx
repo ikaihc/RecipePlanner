@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { IoTrash, IoTrashOutline } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import api from '../api/api'
@@ -9,7 +9,7 @@ const ShoppingList = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    const fetchShoppingList = async () => {
+    const fetchShoppingList = useCallback(async () => {
         try {
             setLoading(true)
             const response = await api.get('/shopping-list')
@@ -24,7 +24,7 @@ const ShoppingList = () => {
         } finally {
             setLoading(false)
         }
-    }
+    }, [navigate])
 
     const removeItem = async (ingredientId) => {
         try {
@@ -54,7 +54,7 @@ const ShoppingList = () => {
 
     useEffect(() => {
         fetchShoppingList()
-    }, [])
+    }, [fetchShoppingList])
 
     if (loading) {
         return (

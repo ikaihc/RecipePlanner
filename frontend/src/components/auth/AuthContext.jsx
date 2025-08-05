@@ -5,7 +5,6 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
   // Check localStorage on app start
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -13,7 +12,6 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = () => setIsLoggedIn(true);
-
 
   const logout = () => {
       localStorage.removeItem('token')
@@ -27,6 +25,7 @@ export function AuthProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   return useContext(AuthContext);
 }

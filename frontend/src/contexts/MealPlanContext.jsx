@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react'
+import { createContext, useReducer, useContext } from 'react'
 import api from '../api/api.js'
 
 const MealPlanContext = createContext()
@@ -22,15 +22,16 @@ const mealPlanReducer = (state, action) => {
             }
     }
 }
+
 export const MealPlanProvider = ({ children }) => {
     const [state, dispatch] = useReducer(mealPlanReducer, initialState)
 
     const actions = {
-        loadMealPlans:async()=>{
-            const result =  await api.get('/meal-plans')
+        loadMealPlans: async () => {
+            const result = await api.get('/meal-plans')
             dispatch({ type: 'load_meal_plans', payload: result.data })
         },
-        addToMealPlans: async(mealPlans) => {
+        addToMealPlans: async (mealPlans) => {
             const result = await api.post('/meal-plans', mealPlans)
             dispatch({ type: 'add_to_meal_plans', payload: result.data })
             return result
@@ -39,12 +40,12 @@ export const MealPlanProvider = ({ children }) => {
 
     const value = { ...state, ...actions }
 
-    return <MealPlanContext.Provider value={ value }>
-        { children }
+    return <MealPlanContext.Provider value={value}>
+        {children}
     </MealPlanContext.Provider>
-
 }
 
-export const useMealPlan = () => {
+// eslint-disable-next-line react-refresh/only-export-components
+export function useMealPlan() {
     return useContext(MealPlanContext)
 }

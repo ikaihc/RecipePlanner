@@ -34,7 +34,9 @@ jobs:
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: |
+        composer install --no-ansi --no-interaction --no-scripts --prefer-dist
+        composer dump-autoload
     
     - name: Generate key
       run: php artisan key:generate
@@ -96,7 +98,9 @@ jobs:
         php-version: '8.1'
     
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: |
+        composer install --no-ansi --no-interaction --no-scripts --prefer-dist
+        composer dump-autoload
     
     - name: Run Security Check
       run: composer audit
@@ -113,7 +117,9 @@ jobs:
         php-version: '8.1'
     
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: |
+        composer install --no-ansi --no-interaction --no-scripts --prefer-dist
+        composer dump-autoload
     
     - name: Run PHP CS Fixer
       run: vendor/bin/php-cs-fixer fix --dry-run --diff 

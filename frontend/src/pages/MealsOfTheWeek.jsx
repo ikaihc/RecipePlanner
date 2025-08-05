@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { IoAdd, IoTrash, IoCalendar } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import api from '../api/api'
@@ -19,7 +19,7 @@ const MealsOfTheWeek = () => {
     const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     const mealTypes = ['breakfast', 'lunch', 'dinner']
 
-    const fetchMealPlans = async () => {
+    const fetchMealPlans = useCallback(async () => {
         try {
             setLoading(true)
             const response = await api.get('/meal-plans')
@@ -34,7 +34,7 @@ const MealsOfTheWeek = () => {
         } finally {
             setLoading(false)
         }
-    }
+    }, [navigate])
 
     const fetchRecipes = async () => {
         try {
@@ -96,7 +96,7 @@ const MealsOfTheWeek = () => {
     useEffect(() => {
         fetchMealPlans()
         fetchRecipes()
-    }, [])
+    }, [fetchMealPlans])
 
     const getMealPlansForDayAndType = (day, mealType) => {
         return mealPlans.filter(plan => 
@@ -245,7 +245,7 @@ const MealsOfTheWeek = () => {
                                                     <td key={mealType} className="py-4 px-4">
                                                         {mealPlans.length > 0 ? (
                                                             <div className="space-y-2">
-                                                                {mealPlans.map((mealPlan, index) => (
+                                                                {mealPlans.map((mealPlan) => (
                                                                     <div key={mealPlan.id} className="flex items-center justify-between bg-indigo-50 rounded-lg p-2">
                                                                         <span className="font-medium text-indigo-900 text-sm">
                                                                             {mealPlan.recipe?.title || 'Unknown Recipe'}

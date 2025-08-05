@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './AuthForm.css';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 
 export default function Register() {
@@ -10,7 +10,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [success, setSuccess] = useState('');
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
+  // const NAVIGATE = useNavigate();
 
   const validateForm = () => {
       const newErrors = {};

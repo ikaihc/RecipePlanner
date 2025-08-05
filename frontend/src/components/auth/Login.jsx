@@ -9,10 +9,10 @@ export default function Login () {
     const { login } = useAuth()
     const navigate = useNavigate()
 
-    const testUsers = [
-        { email: 'test@example.com', password: 'password' },
-
-    ]
+    // Test user credentials for demo
+    // const TEST_USERS = [
+    //     { email: 'test@example.com', password: 'password' },
+    // ]
 
     const handleSubmit = async(e) => {
         e.preventDefault()
