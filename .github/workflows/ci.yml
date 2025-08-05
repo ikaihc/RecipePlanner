@@ -31,7 +31,9 @@ jobs:
         coverage: xdebug
     
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      run: |
+        cd backend
+        php -r "file_exists('.env') || copy('.env.example', '.env');"
     
     - name: Install Dependencies
       run: |
@@ -42,7 +44,7 @@ jobs:
     - name: Generate key
       run: |
         cd backend
-        php artisan key:generate
+        php artisan key:generate --force
     
     - name: Directory Permissions
       run: |
