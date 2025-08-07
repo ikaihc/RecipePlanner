@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { IoIosMenu, IoIosClose } from 'react-icons/io'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 
 const navItems = [
@@ -17,6 +17,7 @@ const navItems = [
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
      const { isLoggedIn, logout } = useAuth(); // ✅ 正确地放在函数组件中
+    const navigate = useNavigate()
 
 
     const toggleMenu = () => setIsOpen(!isOpen)
@@ -29,7 +30,9 @@ const Navbar = () => {
       path: '/',
       onClick: (e) => {
         e.preventDefault(); // 防止立即跳转
-        logout();           // 执行登出
+        logout()// 执行登出
+          localStorage.removeItem('token')
+navigate('/login')
       }
     }]
 
