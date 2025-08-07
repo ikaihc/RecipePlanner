@@ -10,8 +10,10 @@ const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sat
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner']
 
 function RecipeDetail () {
-    const { getRecipeById, toggleFavorite, favorites, loadFavorites } = useRecipes()
-    const { mealPlans, loadMealPlans ,addToMealPlans} = useMealPlan()
+    const { getRecipeById, toggleFavorite, favorites, loadFavorites} = useRecipes()
+    const { mealPlans, loadMealPlans, addToMealPlans } = useMealPlan()
+
+    const [isLoading, setIsLoading] = useState(true)
 
     const { recipeId } = useParams()
     const [curRecipe, setCurRecipe] = useState()
@@ -30,14 +32,20 @@ function RecipeDetail () {
     }, [])
 
     useEffect(() => {
-        ( async function () {
-            const recipe = await getRecipeById(recipeId)
-            setCurRecipe(recipe)
+        (async function () {
+            try {
+                const recipe = await getRecipeById(recipeId)
+                setCurRecipe(recipe)
 
-            const favs = await loadFavorites()
-            const isFav = favs?.some(fav => fav.id === recipe.id)
-            setIsFavorite(isFav)
-        } )()
+                const favs = await loadFavorites()
+                const isFav = favs?.some(fav => fav.id === recipe.id)
+                setIsFavorite(isFav)
+            } catch (error) {
+                console.error("Failed to load recipe:", error)
+            } finally {
+                setIsLoading(false)
+            }
+        })()
     }, [])
 
     // This is for test
@@ -53,10 +61,8 @@ function RecipeDetail () {
         }
 
         await toggleFavorite(recipeId)
-        const updatedFavorites = await loadFavorites()
 
-        const isFav = updatedFavorites?.some(fav => fav.id === curRecipe.id)
-        setIsFavorite(isFav)
+        setIsFavorite(prev => !prev);
     }
 
     // handle meal plan checkbox
@@ -75,8 +81,11 @@ function RecipeDetail () {
 
     // handle add to meal plans
     const handleAddToMealPlan = () => {
-        if (Object.keys(mealPlanSelections).length === 0) alert(
-            'Please select at least one meal to add to your meal plan!')
+        if (Object.keys(mealPlanSelections).length === 0) {
+            alert(
+                'Please select at least one meal to add to your meal plan!')
+            return
+        }
 
         // setMealPlans(prev => {
         const newItems = []
@@ -104,11 +113,13 @@ function RecipeDetail () {
             console.log(result)
         })
 
+        alert('Added to meal plans successfully')
         setMealPlanSelections({})
+
     }
 
     // Add all ingredients to shopping list
-    const handleAddToShoppingList = async () => {
+    const handleAddToShoppingList = async() => {
         if (!token) {
             navigate('/login')
             return
@@ -116,14 +127,24 @@ function RecipeDetail () {
 
         try {
             setAddingToShoppingList(true)
-            await api.post(`/shopping-list/from-recipe/${recipeId}`)
+            await api.post(`/shopping-list/from-recipe/${ recipeId }`)
             alert('Ingredients added to shopping list!')
-        } catch (error) {
+        }
+        catch (error) {
             alert(error.message || 'Failed to add ingredients to shopping list')
         } finally {
             setAddingToShoppingList(false)
         }
     }
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-dvh">
+                <div className="w-12 h-12 border-4 border-indigo-500 border-dashed rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
 
     if (!curRecipe) {
         return (
@@ -137,7 +158,7 @@ function RecipeDetail () {
 
     return (
         <>
-            {/* <h1 className="text-4xl font-semibold text-gray-800 my-5 text-center">Recipe Detail { recipeId }</h1> */}
+            {/* <h1 className="text-4xl font-semibold text-gray-800 my-5 text-center">Recipe Detail { recipeId }</h1> */ }
             <div className="grid grid-cols-1 md:grid-cols-8 gap-10 p-6 sm:p-16 justify-items-center">
                 {/* Left */ }
                 <div className="col-span-3">
@@ -159,7 +180,7 @@ function RecipeDetail () {
                         disabled={ addingToShoppingList }
                         className="w-full p-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium rounded-md transition-colors flex items-center justify-center gap-2 mb-4"
                     >
-                        <IoCartOutline size={ 20 } />
+                        <IoCartOutline size={ 20 }/>
                         { addingToShoppingList ? 'Adding...' : 'Add Ingredients to Shopping List' }
                     </button>
 

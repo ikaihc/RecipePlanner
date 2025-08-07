@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useRecipes } from '../contexts/RecipeContext.jsx'
 import RecipeForm from '../components/feature/recipes/RecipeForm.jsx'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const UpdateRecipe = () => {
     const { recipeId } = useParams()
@@ -9,13 +9,20 @@ const UpdateRecipe = () => {
     const navigate = useNavigate()
     const [existingRecipe, setExistingRecipe] = useState(null)
     const token = localStorage.getItem('token')
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         (async function(){
+
+        try {
             const recipe = await getRecipeById(recipeId)
             setExistingRecipe(recipe)
-            console.log('recipe',recipe,recipeId)
-        })()
+        } catch (error) {
+            console.error("Failed to load recipe:", error)
+        } finally {
+            setIsLoading(false)
+        }
+    })()
 
         if (!token) {
             navigate('login')
@@ -61,6 +68,15 @@ const UpdateRecipe = () => {
         alert('Recipe updated successfully!')
         navigate(`/${ existingRecipe.id }/detail`)
     }
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-dvh">
+                <div className="w-12 h-12 border-4 border-indigo-500 border-dashed rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
 
     if (!existingRecipe) {
         return (
